@@ -26,10 +26,10 @@ import javax.inject.Named;
  */
 @Named
 @SessionScoped
-public class EmpleadoBean implements BasicOperations{
+public class EmpleadoBean implements BasicOperations {
 
     private List<Empleado> listaEmpleados;
-    
+
     @PostConstruct
     @Override
     public void inicializarClase() {
@@ -43,16 +43,22 @@ public class EmpleadoBean implements BasicOperations{
         Logger.getLogger(EmpleadoBean.class.getClass()).log(Level.INFO, "Cargando Lista de Empleados");
         try (Connection connection = ConnectionManager.produceConnection();
                 Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery(query)){
-            Empleado empleado = new Empleado();
-            empleado.setId_empleado(resultSet.getInt("id_empleado"));
-            empleado.setNombre(resultSet.getString("nombre"));
-            empleado.setApellido(resultSet.getString("apellido"));
-            empleado.setFecha_nac(resultSet.getDate("fecha_nac"));
-            empleado.setInactive_date(resultSet.getDate("inactive_date"));
-            listaEmpleados.add(empleado);
+                ResultSet resultSet = statement.executeQuery(query)) {
+            while (resultSet.next()) {
+                if (resultSet.getDate("inactive_date") == null) {
+                    Empleado empleado = new Empleado();
+                    empleado.setId_empleado(resultSet.getInt("id_empleado"));
+                    empleado.setNombre(resultSet.getString("nombre"));
+                    empleado.setApellido(resultSet.getString("apellido"));
+                    empleado.setFecha_nac(resultSet.getDate("fecha_nac"));
+                    empleado.setInactive_date(resultSet.getDate("inactive_date"));
+                    listaEmpleados.add(empleado);
+                }
+
+            }
+
         } catch (Exception e) {
-            Logger.getLogger(EmpleadoBean.class.getClass()).log(Level.SEVERE, "MostrarData Error: {0}",e);
+            Logger.getLogger(EmpleadoBean.class.getClass()).log(Level.SEVERE, "MostrarData Error: {0}", e);
         }
     }
 
@@ -62,14 +68,14 @@ public class EmpleadoBean implements BasicOperations{
         String query = "INSERT INTO adminPlanillas.Empleados (nombre,apellido,fecha_nac) values (?,?,?)";
         Logger.getLogger(EmpleadoBean.class.getClass()).log(Level.INFO, "Insertando Empleado con ID: {0}", empleado.getId_empleado());
         try (Connection connection = ConnectionManager.produceConnection();
-                PreparedStatement pstmt = connection.prepareStatement(query);){
+                PreparedStatement pstmt = connection.prepareStatement(query);) {
             pstmt.setString(1, empleado.getNombre());
-            pstmt.setString(2,empleado.getApellido());
+            pstmt.setString(2, empleado.getApellido());
             pstmt.setDate(3, new java.sql.Date(empleado.getFecha_nac().getTime()));
             int count = pstmt.executeUpdate();
             Logger.getLogger(EmpleadoBean.class.getClass()).log(Level.INFO, "Resultado Agregar Data - Row Count: {0}", count);
         } catch (Exception e) {
-            Logger.getLogger(EmpleadoBean.class.getClass()).log(Level.SEVERE, "AgregarData Error: {0}",e);
+            Logger.getLogger(EmpleadoBean.class.getClass()).log(Level.SEVERE, "AgregarData Error: {0}", e);
         }
         return "URL";
     }
@@ -85,14 +91,14 @@ public class EmpleadoBean implements BasicOperations{
         Logger.getLogger(EmpleadoBean.class.getClass()).log(Level.INFO, "Eliminando empleado {0}", empleado.getId_empleado());
         String query = "UPDATE adminPlanillas.Empleados SET inactive_date = ? WHERE id_empleado = " + empleado.getId_empleado();
         try (Connection connection = ConnectionManager.produceConnection();
-                PreparedStatement pstmt = connection.prepareStatement(query);){
+                PreparedStatement pstmt = connection.prepareStatement(query);) {
             pstmt.setDate(1, new java.sql.Date(new Date().getTime()));
             int count = pstmt.executeUpdate();
             Logger.getLogger(EmpleadoBean.class.getClass()).log(Level.INFO, "Resultado Eliminar Data - Row Count: {0}", count);
         } catch (Exception e) {
-            Logger.getLogger(EmpleadoBean.class.getClass()).log(Level.SEVERE, "AgregarData Error: {0}",e);
+            Logger.getLogger(EmpleadoBean.class.getClass()).log(Level.SEVERE, "AgregarData Error: {0}", e);
         }
         return "URL";
     }
-    
+
 }

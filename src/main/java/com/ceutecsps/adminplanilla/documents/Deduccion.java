@@ -18,6 +18,7 @@ public class Deduccion {
 
     //Verificar esto...no es certero..este tipo deduccion
     private String deduccion;
+    private int porcentajeDeducir;
     private Date inactive_date;
 
     public Deduccion() {
@@ -46,6 +47,14 @@ public class Deduccion {
 
     public void setDeduccion(String deduccion) {
         this.deduccion = deduccion;
+    }
+
+    public int getPorcentajeDeducir() {
+        return porcentajeDeducir;
+    }
+
+    public void setPorcentajeDeducir(int porcentajeDeducir) {
+        this.porcentajeDeducir = porcentajeDeducir;
     }
 
     public Date getInactive_date() {
