@@ -15,8 +15,6 @@ public class Deduccion {
 
     private int id_deduccion;
     private String descripcion;
-
-    //Verificar esto...no es certero..este tipo deduccion
     private String deduccion;
     private int porcentajeDeducir;
     private Date inactive_date;
