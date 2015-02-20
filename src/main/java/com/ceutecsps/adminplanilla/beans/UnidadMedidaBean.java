@@ -17,12 +17,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import javax.annotation.PostConstruct;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
 /**
  *
  * @author Jeries
  */
-public class UnidadMedidaBean implements BasicOperations {
+@Named
+@ViewScoped
+public class UnidadMedidaBean extends AbstractBean {
 
     private List<UnidadMedida> listaUnidadMedida;
 
@@ -74,7 +78,7 @@ public class UnidadMedidaBean implements BasicOperations {
     }
 
     @Override
-    public String modificarData(Object objeto) {
+    public String modificarData(Object objeto,boolean saveable) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Tempates.
     }
 

@@ -35,6 +35,11 @@
                         </div>
                         <!-- /.row -->
                         
+                        <h:dataTable value="#{empleadoBean.listaEmpleados}" var="empleado">
+                            <h:column>
+                                #{empleado.nombre}
+                            </h:column>
+                        </h:dataTable>
                         <p>#{testclass.exampleMethod()}</p>
                     </div>
                 </div>

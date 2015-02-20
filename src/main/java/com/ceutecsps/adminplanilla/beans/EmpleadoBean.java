@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 /**
@@ -25,8 +25,8 @@ import javax.inject.Named;
  * @author Jeries
  */
 @Named
-@SessionScoped
-public class EmpleadoBean implements BasicOperations {
+@ViewScoped
+public class EmpleadoBean extends AbstractBean {
 
     private List<Empleado> listaEmpleados;
 
@@ -34,6 +34,7 @@ public class EmpleadoBean implements BasicOperations {
     @Override
     public void inicializarClase() {
         mostrarData();
+        System.out.println("CALLED POST CONSTRUCT");
     }
 
     @Override
@@ -81,7 +82,11 @@ public class EmpleadoBean implements BasicOperations {
     }
 
     @Override
-    public String modificarData(Object objeto) {
+    public String modificarData(Object objeto, boolean saveable) {
+        if(!saveable){
+            
+            return "empleado";
+        }
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -100,5 +105,15 @@ public class EmpleadoBean implements BasicOperations {
         }
         return "URL";
     }
+
+    public List<Empleado> getListaEmpleados() {
+        return listaEmpleados;
+    }
+
+    public void setListaEmpleados(List<Empleado> listaEmpleados) {
+        this.listaEmpleados = listaEmpleados;
+    }
+    
+    
 
 }
