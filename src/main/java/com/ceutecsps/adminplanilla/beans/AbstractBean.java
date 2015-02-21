@@ -18,7 +18,7 @@ public abstract class AbstractBean implements Serializable{
     public abstract void inicializarClase();
     public abstract void mostrarData();
     public abstract String agregarData(Object objeto);
-    public abstract String modificarData(Object objeto, boolean saveable);
+    public abstract String modificarData(Object objeto, boolean updateable);
     public abstract String eliminarData(Object objeto);
 
     public boolean isUpdateable() {
