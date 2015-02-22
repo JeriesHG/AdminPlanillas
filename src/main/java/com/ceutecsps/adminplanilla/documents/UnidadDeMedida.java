@@ -11,14 +11,14 @@ import java.util.Date;
  *
  * @author Jeries
  */
-public class UnidadMedida {
+public class UnidadDeMedida {
 
     private int id_unidadMedida;
     private String descripcion;
     private String unidad;
     private Date inactive_date;
 
-    public UnidadMedida() {
+    public UnidadDeMedida() {
 
     }
 

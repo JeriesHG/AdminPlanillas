@@ -26,11 +26,11 @@
                         <p:inputText id = "nombreEmpleado"  required="true" requiredMessage="Por favor ingrese su nombre"
                                      value="#{empleadoBean.selectedEmpleado.nombre}"></p:inputText>
 
-                        <h:outputLabel for="apellidoAmpleado" value="Apellido "></h:outputLabel>
+                        <h:outputLabel for="apellidoAmpleado" value="Apellido: "></h:outputLabel>
                         <p:inputText id = "apellidoAmpleado"  required="true" requiredMessage="Por favor ingrese su apellido"
                                      value="#{empleadoBean.selectedEmpleado.apellido}" ></p:inputText>
 
-                        <h:outputLabel for="fechaNacEmpleado" value="Fecha Nacimiento"></h:outputLabel>
+                        <h:outputLabel for="fechaNacEmpleado" value="Fecha Nacimiento: "></h:outputLabel>
                         <p:calendar navigator="true" value="#{empleadoBean.selectedEmpleado.fecha_nac}" required="true" 
                                     requiredMessage="Por favor ingrese su fecha de nacimiento"
                                     yearRange="c-120:c" pattern="MM/dd/yyyy" ></p:calendar>

@@ -92,7 +92,7 @@ public class EmpleadoDAO {
             result = pstmt.execute();
             Logger.getLogger(EmpleadoDAO.class.getName()).log(Level.INFO, "Resultado Eliminar Data - Row Result: {0}", result);
         } catch (Exception e) {
-            Logger.getLogger(EmpleadoDAO.class.getName()).log(Level.SEVERE, "AgregarData Error: {0}", e);
+            Logger.getLogger(EmpleadoDAO.class.getName()).log(Level.SEVERE, "eliminar Error: {0}", e);
         }
         return result;
     }
@@ -105,16 +105,16 @@ public class EmpleadoDAO {
     public boolean actualizarEmpleado(Empleado empleado) {
         boolean result = false;
         Logger.getLogger(EmpleadoDAO.class.getName()).log(Level.INFO, "Eliminando empleado {0}", empleado.getId_empleado());
-        String query = "UPDATE adminPlanillas.Empleados SET inactive_date = ? WHERE id_empleado = " + empleado.getId_empleado();
+        String query = "UPDATE adminPlanillas.Empleados SET nombre = ?, apellido = ?, fecha_nac = ? WHERE id_empleado = " + empleado.getId_empleado();
         try (Connection connection = ConnectionManager.produceConnection();
                 PreparedStatement pstmt = connection.prepareStatement(query);) {
             pstmt.setString(1, empleado.getNombre());
             pstmt.setString(2, empleado.getApellido());
             pstmt.setDate(3, new java.sql.Date(empleado.getFecha_nac().getTime()));
             result = pstmt.execute();
-            Logger.getLogger(EmpleadoDAO.class.getName()).log(Level.INFO, "Resultado Eliminar Data - Row Result: {0}", result);
+            Logger.getLogger(EmpleadoDAO.class.getName()).log(Level.INFO, "Resultado actualizar Data - Row Result: {0}", result);
         } catch (Exception e) {
-            Logger.getLogger(EmpleadoDAO.class.getName()).log(Level.SEVERE, "AgregarData Error: {0}", e);
+            Logger.getLogger(EmpleadoDAO.class.getName()).log(Level.SEVERE, "actualizar Error: {0}", e);
         }
         return result;
     }
