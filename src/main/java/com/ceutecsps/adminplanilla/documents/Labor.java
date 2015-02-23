@@ -5,30 +5,18 @@
  */
 package com.ceutecsps.adminplanilla.documents;
 
-import java.util.Date;
-
 /**
  *
  * @author Jeries
  */
-public class Labor {
+public class Labor extends AbstractDoc{
 
-    private int id_labor;
     private String nombre;
     private float precio;
     private Empleado empleado;
-    private Date inactive_date;
 
     public Labor() {
 
-    }
-
-    public int getId_labor() {
-        return id_labor;
-    }
-
-    public void setId_labor(int id_labor) {
-        this.id_labor = id_labor;
     }
 
     public String getNombre() {
@@ -53,14 +41,6 @@ public class Labor {
 
     public void setEmpleado(Empleado empleado) {
         this.empleado = empleado;
-    }
-
-    public Date getInactive_date() {
-        return inactive_date;
-    }
-
-    public void setInactive_date(Date inactive_date) {
-        this.inactive_date = inactive_date;
     }
 
 }

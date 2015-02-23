@@ -49,9 +49,9 @@ public class UnidadMedidaBean extends AbstractBean {
         if (updateable) {
             this.setUpdateable(false);
             boolean result = unidadDAO.actualizarUnidadDeMedida(((UnidadDeMedida) objeto));
-            return "unidadMedida?faces-redirect=true&amp;result=" + result + "&amp;id=" + ((UnidadDeMedida) objeto).getId_unidadMedida();
+            return "unidadMedida?faces-redirect=true&amp;result=" + result + "&amp;id=" + ((UnidadDeMedida) objeto).getId();
         }
-        return "unidadMedida?faces-redirect=true&amp;saveable=true&amp;id=" + ((UnidadDeMedida) objeto).getId_unidadMedida();
+        return "unidadMedida?faces-redirect=true&amp;saveable=true&amp;id=" + ((UnidadDeMedida) objeto).getId();
     }
 
     @Override

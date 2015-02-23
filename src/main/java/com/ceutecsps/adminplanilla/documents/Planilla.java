@@ -11,25 +11,15 @@ import java.util.Date;
  *
  * @author Jeries
  */
-public class Planilla {
+public class Planilla extends AbstractDoc{
 
-    private int id_planilla;
     private Date fecha_inicio;
     private Date fecha_fin;
     private boolean creada;
     private Actividad actividad;
-    private Date inactive_date;
 
     public Planilla() {
 
-    }
-
-    public int getId_planilla() {
-        return id_planilla;
-    }
-
-    public void setId_planilla(int id_planilla) {
-        this.id_planilla = id_planilla;
     }
 
     public Date getFecha_inicio() {
@@ -63,13 +53,4 @@ public class Planilla {
     public void setActividad(Actividad actividad) {
         this.actividad = actividad;
     }
-
-    public Date getInactive_date() {
-        return inactive_date;
-    }
-
-    public void setInactive_date(Date inactive_date) {
-        this.inactive_date = inactive_date;
-    }
-
 }

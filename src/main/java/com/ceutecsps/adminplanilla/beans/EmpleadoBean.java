@@ -49,9 +49,9 @@ public class EmpleadoBean extends AbstractBean {
         if(updateable){
             this.setUpdateable(false);
             boolean result = empleadoDAO.actualizarEmpleado((Empleado) objeto);
-            return "empleado?faces-redirect=true&amp;result="+result+"&amp;id=" + ((Empleado) objeto).getId_empleado();
+            return "empleado?faces-redirect=true&amp;result="+result+"&amp;id=" + ((Empleado) objeto).getId();
         }
-         return "empleado?faces-redirect=true&amp;saveable=true&amp;id=" + ((Empleado) objeto).getId_empleado();
+         return "empleado?faces-redirect=true&amp;saveable=true&amp;id=" + ((Empleado) objeto).getId();
     }
 
     @Override
