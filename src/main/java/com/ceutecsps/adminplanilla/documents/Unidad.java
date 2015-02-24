@@ -9,12 +9,11 @@ package com.ceutecsps.adminplanilla.documents;
  *
  * @author Jeries
  */
-public class UnidadDeMedida extends AbstractDoc{
+public class Unidad extends AbstractDoc{
 
     private String descripcion;
-    private String unidad;
 
-    public UnidadDeMedida() {
+    public Unidad() {
 
     }
     public String getDescripcion() {
@@ -23,14 +22,6 @@ public class UnidadDeMedida extends AbstractDoc{
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public String getUnidad() {
-        return unidad;
-    }
-
-    public void setUnidad(String unidad) {
-        this.unidad = unidad;
     }
 
 }

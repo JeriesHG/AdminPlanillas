@@ -5,18 +5,18 @@
  */
 package com.ceutecsps.adminplanilla.factories;
 
-import com.ceutecsps.adminplanilla.documents.UnidadDeMedida;
+import com.ceutecsps.adminplanilla.documents.Unidad;
 import java.util.function.Supplier;
 
 /**
  *
  * @author Jeries
  */
-public class UnidadDeMedidaFactory {
+public class UnidadFactory {
     
-    private final static Supplier<UnidadDeMedida> unidadMedidaSupplier = UnidadDeMedida::new;
+    private final static Supplier<Unidad> unidadMedidaSupplier = Unidad::new;
     
-    public static UnidadDeMedida produceUnidadDeMedida(){
+    public static Unidad produceUnidadDeMedida(){
         return unidadMedidaSupplier.get();
     }
 }

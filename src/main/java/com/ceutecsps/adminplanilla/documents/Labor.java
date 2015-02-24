@@ -13,7 +13,7 @@ public class Labor extends AbstractDoc{
 
     private String nombre;
     private float precio;
-    private Empleado empleado;
+    private Unidad unidad;
 
     public Labor() {
 
@@ -35,12 +35,13 @@ public class Labor extends AbstractDoc{
         this.precio = precio;
     }
 
-    public Empleado getEmpleado() {
-        return empleado;
+    public Unidad getUnidad() {
+        return unidad;
     }
 
-    public void setEmpleado(Empleado empleado) {
-        this.empleado = empleado;
+    public void setUnidad(Unidad unidad) {
+        this.unidad = unidad;
     }
+
 
 }

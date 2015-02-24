@@ -16,6 +16,7 @@ public class Actividad extends AbstractDoc{
     private Date fecha;
     private boolean status;
     private Empleado empleado;
+    private Labor labor;
 
     public Actividad() {
 
@@ -44,4 +45,14 @@ public class Actividad extends AbstractDoc{
     public void setEmpleado(Empleado empleado) {
         this.empleado = empleado;
     }
+
+    public Labor getLabor() {
+        return labor;
+    }
+
+    public void setLabor(Labor labor) {
+        this.labor = labor;
+    }
+    
+    
 }

@@ -6,6 +6,7 @@
 package com.ceutecsps.adminplanilla.documents;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -16,7 +17,8 @@ public class Planilla extends AbstractDoc{
     private Date fecha_inicio;
     private Date fecha_fin;
     private boolean creada;
-    private Actividad actividad;
+    private List<Actividad> listaActividades;
+    private List<Deduccion> listaDeducciones;
 
     public Planilla() {
 
@@ -46,11 +48,22 @@ public class Planilla extends AbstractDoc{
         this.creada = creada;
     }
 
-    public Actividad getActividad() {
-        return actividad;
+    public List<Actividad> getListaActividades() {
+        return listaActividades;
     }
 
-    public void setActividad(Actividad actividad) {
-        this.actividad = actividad;
+    public void setListaActividades(List<Actividad> listaActividades) {
+        this.listaActividades = listaActividades;
     }
+
+    public List<Deduccion> getListaDeducciones() {
+        return listaDeducciones;
+    }
+
+    public void setListaDeducciones(List<Deduccion> listaDeducciones) {
+        this.listaDeducciones = listaDeducciones;
+    }
+    
+    
+
 }

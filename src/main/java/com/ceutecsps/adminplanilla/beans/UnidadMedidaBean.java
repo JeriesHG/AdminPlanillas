@@ -5,9 +5,9 @@
  */
 package com.ceutecsps.adminplanilla.beans;
 
-import com.ceutecsps.adminplanilla.daos.UnidadDeMedidaDAO;
-import com.ceutecsps.adminplanilla.documents.UnidadDeMedida;
-import com.ceutecsps.adminplanilla.factories.UnidadDeMedidaFactory;
+import com.ceutecsps.adminplanilla.daos.UnidadDAO;
+import com.ceutecsps.adminplanilla.documents.Unidad;
+import com.ceutecsps.adminplanilla.factories.UnidadFactory;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
@@ -21,15 +21,15 @@ import javax.inject.Named;
 @ViewScoped
 public class UnidadMedidaBean extends AbstractBean {
 
-    private List<UnidadDeMedida> listaUnidadMedida;
-    private UnidadDeMedida selectedUnidadDeMedida;
-    private UnidadDeMedidaDAO unidadDAO = new UnidadDeMedidaDAO();
+    private List<Unidad> listaUnidadMedida;
+    private Unidad selectedUnidadDeMedida;
+    private UnidadDAO unidadDAO = new UnidadDAO();
 
     @PostConstruct
     @Override
     public void inicializarClase() {
         mostrarData();
-        selectedUnidadDeMedida = UnidadDeMedidaFactory.produceUnidadDeMedida();
+        selectedUnidadDeMedida = UnidadFactory.produceUnidadDeMedida();
     }
 
     @Override
@@ -39,8 +39,8 @@ public class UnidadMedidaBean extends AbstractBean {
 
     @Override
     public String agregarData(Object objeto) {
-        boolean result = unidadDAO.agregarUnidadDeMedida(((UnidadDeMedida) objeto));
-        selectedUnidadDeMedida = UnidadDeMedidaFactory.produceUnidadDeMedida();
+        boolean result = unidadDAO.agregarUnidadDeMedida(((Unidad) objeto));
+        selectedUnidadDeMedida = UnidadFactory.produceUnidadDeMedida();
         return "unidadMedida?faces-redirect=true&amp;result=" + result;
     }
 
@@ -48,31 +48,31 @@ public class UnidadMedidaBean extends AbstractBean {
     public String modificarData(Object objeto, boolean updateable) {
         if (updateable) {
             this.setUpdateable(false);
-            boolean result = unidadDAO.actualizarUnidadDeMedida(((UnidadDeMedida) objeto));
-            return "unidadMedida?faces-redirect=true&amp;result=" + result + "&amp;id=" + ((UnidadDeMedida) objeto).getId();
+            boolean result = unidadDAO.actualizarUnidadDeMedida(((Unidad) objeto));
+            return "unidadMedida?faces-redirect=true&amp;result=" + result + "&amp;id=" + ((Unidad) objeto).getId();
         }
-        return "unidadMedida?faces-redirect=true&amp;saveable=true&amp;id=" + ((UnidadDeMedida) objeto).getId();
+        return "unidadMedida?faces-redirect=true&amp;saveable=true&amp;id=" + ((Unidad) objeto).getId();
     }
 
     @Override
     public String eliminarData(Object objeto) {
-        boolean result = unidadDAO.eliminarUnidadMedida(((UnidadDeMedida) objeto));
+        boolean result = unidadDAO.eliminarUnidadMedida(((Unidad) objeto));
         return "unidadMedida?faces-redirect=true&amp;result=" + result;
     }
 
-    public List<UnidadDeMedida> getListaUnidadMedida() {
+    public List<Unidad> getListaUnidadMedida() {
         return listaUnidadMedida;
     }
 
-    public void setListaUnidadMedida(List<UnidadDeMedida> listaUnidadMedida) {
+    public void setListaUnidadMedida(List<Unidad> listaUnidadMedida) {
         this.listaUnidadMedida = listaUnidadMedida;
     }
 
-    public UnidadDeMedida getSelectedUnidadDeMedida() {
+    public Unidad getSelectedUnidadDeMedida() {
         return selectedUnidadDeMedida;
     }
 
-    public void setSelectedUnidadDeMedida(UnidadDeMedida selectedUnidadDeMedida) {
+    public void setSelectedUnidadDeMedida(Unidad selectedUnidadDeMedida) {
         this.selectedUnidadDeMedida = selectedUnidadDeMedida;
     }
 
