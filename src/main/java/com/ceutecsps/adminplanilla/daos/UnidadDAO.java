@@ -23,6 +23,8 @@ import java.util.logging.Logger;
  */
 public class UnidadDAO {
 
+    private static final Logger LOGGER = Logger.getLogger(UnidadDAO.class.getName());
+
     /**
      * Carga todas las unidades de medida activa
      *
@@ -31,7 +33,7 @@ public class UnidadDAO {
     public List<Unidad> readUnidadMedidas() {
         List listaUnidadMedida = new ArrayList();
         String query = "SELECT * FROM adminPlanillas.UnidadMedida";
-        Logger.getLogger(UnidadDAO.class.getName()).log(Level.INFO, "Cargando Lista de Unidades");
+        LOGGER.log(Level.INFO, "Cargando Lista de Unidades");
         try (Connection connection = ConnectionManager.produceConnection();
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(query)) {
@@ -45,14 +47,14 @@ public class UnidadDAO {
                 }
             }
         } catch (Exception e) {
-            Logger.getLogger(UnidadDAO.class.getName()).log(Level.SEVERE, "MostrarData Error: {0}", e);
+            LOGGER.log(Level.SEVERE, "MostrarData Error: {0}", e);
         }
         return listaUnidadMedida;
     }
 
     /**
      * Se envia una unidad de medida, ya pasando las validaciones, y se inserta
- en la tabla Unidad
+     * en la tabla Unidad
      *
      * @param unidadMedida
      * @return true si se inserto correctamente
@@ -60,14 +62,14 @@ public class UnidadDAO {
     public boolean agregarUnidadDeMedida(Unidad unidadMedida) {
         boolean result = false;
         String query = "INSERT INTO adminPlanillas.UnidadMedida (descripcion) values (?,?,?)";
-        Logger.getLogger(UnidadDAO.class.getName()).log(Level.INFO, "Insertando Unidad de Medida con ID: {0}", unidadMedida.getId());
+        LOGGER.log(Level.INFO, "Insertando Unidad de Medida con ID: {0}", unidadMedida.getId());
         try (Connection connection = ConnectionManager.produceConnection();
                 PreparedStatement pstmt = connection.prepareStatement(query);) {
             pstmt.setString(1, unidadMedida.getDescripcion());
             result = pstmt.execute();
-            Logger.getLogger(UnidadDAO.class.getName()).log(Level.INFO, "Resultado Agregar Data - Result: {0}", result);
+            LOGGER.log(Level.INFO, "Resultado Agregar Data - Result: {0}", result);
         } catch (Exception e) {
-            Logger.getLogger(UnidadDAO.class.getName()).log(Level.SEVERE, "insertarData Error: {0}", e);
+            LOGGER.log(Level.SEVERE, "insertarData Error: {0}", e);
         }
         return result;
     }
@@ -81,15 +83,15 @@ public class UnidadDAO {
      */
     public boolean eliminarUnidadMedida(Unidad unidadMedida) {
         boolean result = false;
-        Logger.getLogger(UnidadDAO.class.getName()).log(Level.INFO, "Eliminando UnidadMedida {0}", unidadMedida.getId());
+        LOGGER.log(Level.INFO, "Eliminando UnidadMedida {0}", unidadMedida.getId());
         String query = "UPDATE adminPlanillas.UnidadMedida SET inactive_date = ? WHERE id_unidadmedida = " + unidadMedida.getId();
         try (Connection connection = ConnectionManager.produceConnection();
                 PreparedStatement pstmt = connection.prepareStatement(query);) {
             pstmt.setDate(1, new java.sql.Date(new Date().getTime()));
             int count = pstmt.executeUpdate();
-            Logger.getLogger(UnidadDAO.class.getName()).log(Level.INFO, "Resultado Eliminar Data - Row Count: {0}", count);
+            LOGGER.log(Level.INFO, "Resultado Eliminar Data - Row Count: {0}", count);
         } catch (Exception e) {
-            Logger.getLogger(UnidadDAO.class.getName()).log(Level.SEVERE, "eliminarData Error: {0}", e);
+            LOGGER.log(Level.SEVERE, "eliminarData Error: {0}", e);
         }
         return result;
     }
@@ -102,15 +104,15 @@ public class UnidadDAO {
      */
     public boolean actualizarUnidadDeMedida(Unidad unidadMedida) {
         boolean result = false;
-        Logger.getLogger(UnidadDAO.class.getName()).log(Level.INFO, "Actualizando unidad de medida {0}", unidadMedida.getId());
+        LOGGER.log(Level.INFO, "Actualizando unidad de medida {0}", unidadMedida.getId());
         String query = "UPDATE adminPlanillas.UnidadMedida SET descripcion = ? WHERE id_unidadmedida = " + unidadMedida.getId();
         try (Connection connection = ConnectionManager.produceConnection();
                 PreparedStatement pstmt = connection.prepareStatement(query);) {
             pstmt.setString(1, unidadMedida.getDescripcion());
             result = pstmt.execute();
-            Logger.getLogger(UnidadDAO.class.getName()).log(Level.INFO, "Resultado Eliminar Data - Row Result: {0}", result);
+            LOGGER.log(Level.INFO, "Resultado Eliminar Data - Row Result: {0}", result);
         } catch (Exception e) {
-            Logger.getLogger(UnidadDAO.class.getName()).log(Level.SEVERE, "AgregarData Error: {0}", e);
+            LOGGER.log(Level.SEVERE, "AgregarData Error: {0}", e);
         }
         return result;
     }
