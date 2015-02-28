@@ -40,11 +40,11 @@ public class EmpleadoDAO {
             while (resultSet.next()) {
                 if (resultSet.getDate("inactive_date") == null) {
                     Empleado empleado = new Empleado();
-                    empleado.setId(resultSet.getInt("id_empleado"));
-                    empleado.setNombre(resultSet.getString("nombre"));
-                    empleado.setApellido(resultSet.getString("apellido"));
-                    empleado.setFecha_nac(resultSet.getDate("fecha_nac"));
-                    empleado.setInactive_date(resultSet.getDate("inactive_date"));
+                    empleado.setId(resultSet.getInt("Id"));
+                    empleado.setNombre(resultSet.getString("Nombre"));
+                    empleado.setApellido(resultSet.getString("Apellido"));
+                    empleado.setFecha_nac(resultSet.getDate("Fecha_Nac"));
+                    empleado.setInactive_date(resultSet.getDate("Inactive_Date"));
                     listaEmpleados.add(empleado);
                 }
             }
@@ -63,7 +63,7 @@ public class EmpleadoDAO {
      */
     public boolean insertarEmpleado(Empleado empleado) {
         boolean result = false;
-        String query = "INSERT INTO adminPlanillas.Empleados (nombre,apellido,fecha_nac) values (?,?,?)";
+        String query = "INSERT INTO adminPlanillas.Empleados (Nombre,Apellido,Fecha_Nac) values (?,?,?)";
         LOGGER.log(Level.INFO, "Insertando Empleado con ID: {0}", empleado.getId());
         try (Connection connection = ConnectionManager.produceConnection();
                 PreparedStatement pstmt = connection.prepareStatement(query);) {
@@ -88,7 +88,7 @@ public class EmpleadoDAO {
     public boolean eliminarEmpleado(Empleado empleado) {
         boolean result = false;
         LOGGER.log(Level.INFO, "Eliminando empleado {0}", empleado.getId());
-        String query = "UPDATE adminPlanillas.Empleados SET inactive_date = ? WHERE id_empleado = " + empleado.getId();
+        String query = "UPDATE adminPlanillas.Empleados SET inactive_date = ? WHERE Id = " + empleado.getId();
         try (Connection connection = ConnectionManager.produceConnection();
                 PreparedStatement pstmt = connection.prepareStatement(query);) {
             pstmt.setDate(1, new java.sql.Date(new Date().getTime()));
@@ -110,7 +110,7 @@ public class EmpleadoDAO {
     public boolean actualizarEmpleado(Empleado empleado) {
         boolean result = false;
         LOGGER.log(Level.INFO, "Eliminando empleado {0}", empleado.getId());
-        String query = "UPDATE adminPlanillas.Empleados SET nombre = ?, apellido = ?, fecha_nac = ? WHERE id_empleado = " + empleado.getId();
+        String query = "UPDATE adminPlanillas.Empleados SET Nombre = ?, Apellido = ?, Fecha_Nac = ? WHERE Id = " + empleado.getId();
         try (Connection connection = ConnectionManager.produceConnection();
                 PreparedStatement pstmt = connection.prepareStatement(query);) {
             pstmt.setString(1, empleado.getNombre());
