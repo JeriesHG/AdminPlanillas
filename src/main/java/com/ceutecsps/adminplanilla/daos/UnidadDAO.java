@@ -32,17 +32,17 @@ public class UnidadDAO {
      */
     public List<Unidad> readUnidadMedidas() {
         List listaUnidadMedida = new ArrayList();
-        String query = "SELECT * FROM adminPlanillas.UnidadMedida";
+        String query = "SELECT * FROM adminPlanillas.unidades";
         LOGGER.log(Level.INFO, "Cargando Lista de Unidades");
         try (Connection connection = ConnectionManager.produceConnection();
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(query)) {
             while (resultSet.next()) {
-                if (resultSet.getDate("inactive_date") == null) {
+                if (resultSet.getDate("Inactive_Date") == null) {
                     Unidad unidadMedida = new Unidad();
-                    unidadMedida.setId(resultSet.getInt("id_unidadmedida"));
-                    unidadMedida.setDescripcion(resultSet.getString("descripcion"));
-                    unidadMedida.setInactive_date(resultSet.getDate("inactive_date"));
+                    unidadMedida.setId(resultSet.getInt("Id"));
+                    unidadMedida.setDescripcion(resultSet.getString("Descripcion"));
+                    unidadMedida.setInactive_date(resultSet.getDate("Inactive_Date"));
                     listaUnidadMedida.add(unidadMedida);
                 }
             }
@@ -61,7 +61,7 @@ public class UnidadDAO {
      */
     public boolean agregarUnidadDeMedida(Unidad unidadMedida) {
         boolean result = false;
-        String query = "INSERT INTO adminPlanillas.UnidadMedida (descripcion) values (?,?,?)";
+        String query = "INSERT INTO adminPlanillas.unidades (Descripcion) values (?,?,?)";
         LOGGER.log(Level.INFO, "Insertando Unidad de Medida con ID: {0}", unidadMedida.getId());
         try (Connection connection = ConnectionManager.produceConnection();
                 PreparedStatement pstmt = connection.prepareStatement(query);) {
@@ -84,7 +84,7 @@ public class UnidadDAO {
     public boolean eliminarUnidadMedida(Unidad unidadMedida) {
         boolean result = false;
         LOGGER.log(Level.INFO, "Eliminando UnidadMedida {0}", unidadMedida.getId());
-        String query = "UPDATE adminPlanillas.UnidadMedida SET inactive_date = ? WHERE id_unidadmedida = " + unidadMedida.getId();
+        String query = "UPDATE adminPlanillas.unidades SET Inactive_Date = ? WHERE Id = " + unidadMedida.getId();
         try (Connection connection = ConnectionManager.produceConnection();
                 PreparedStatement pstmt = connection.prepareStatement(query);) {
             pstmt.setDate(1, new java.sql.Date(new Date().getTime()));
@@ -105,7 +105,7 @@ public class UnidadDAO {
     public boolean actualizarUnidadDeMedida(Unidad unidadMedida) {
         boolean result = false;
         LOGGER.log(Level.INFO, "Actualizando unidad de medida {0}", unidadMedida.getId());
-        String query = "UPDATE adminPlanillas.UnidadMedida SET descripcion = ? WHERE id_unidadmedida = " + unidadMedida.getId();
+        String query = "UPDATE adminPlanillas.unidades SET Descripcion = ? WHERE Id = " + unidadMedida.getId();
         try (Connection connection = ConnectionManager.produceConnection();
                 PreparedStatement pstmt = connection.prepareStatement(query);) {
             pstmt.setString(1, unidadMedida.getDescripcion());

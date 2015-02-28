@@ -25,13 +25,13 @@ public class LaborDAO {
 
     public List<Labor> readLabores() {
         List<Labor> listaLabores = new ArrayList();
-         String query = "SELECT * FROM adminPlanillas.Labores";
+         String query = "SELECT * FROM adminPlanillas.labores";
         LOGGER.log(Level.INFO, "Cargando Lista de Labores");
         try (Connection connection = ConnectionManager.produceConnection();
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(query)) {
             while (resultSet.next()) {
-                if (resultSet.getDate("inactive_date") == null) {
+                if (resultSet.getDate("Inactive_Date") == null) {
                     Labor labor = new Labor();
                     //getLabor
                     listaLabores.add(labor);

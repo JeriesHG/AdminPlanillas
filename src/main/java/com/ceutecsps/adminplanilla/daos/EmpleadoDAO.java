@@ -32,13 +32,13 @@ public class EmpleadoDAO {
      */
     public List<Empleado> readEmpleados() {
         List listaEmpleados = new ArrayList();
-        String query = "SELECT * FROM adminPlanillas.Empleados";
+        String query = "SELECT * FROM adminPlanillas.empleados";
         LOGGER.log(Level.INFO, "Cargando Lista de Empleados");
         try (Connection connection = ConnectionManager.produceConnection();
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(query)) {
             while (resultSet.next()) {
-                if (resultSet.getDate("inactive_date") == null) {
+                if (resultSet.getDate("Inactive_Date") == null) {
                     Empleado empleado = new Empleado();
                     empleado.setId(resultSet.getInt("Id"));
                     empleado.setNombre(resultSet.getString("Nombre"));
@@ -63,7 +63,7 @@ public class EmpleadoDAO {
      */
     public boolean insertarEmpleado(Empleado empleado) {
         boolean result = false;
-        String query = "INSERT INTO adminPlanillas.Empleados (Nombre,Apellido,Fecha_Nac) values (?,?,?)";
+        String query = "INSERT INTO adminPlanillas.empleados (Nombre,Apellido,Fecha_Nac) values (?,?,?)";
         LOGGER.log(Level.INFO, "Insertando Empleado con ID: {0}", empleado.getId());
         try (Connection connection = ConnectionManager.produceConnection();
                 PreparedStatement pstmt = connection.prepareStatement(query);) {
@@ -88,7 +88,7 @@ public class EmpleadoDAO {
     public boolean eliminarEmpleado(Empleado empleado) {
         boolean result = false;
         LOGGER.log(Level.INFO, "Eliminando empleado {0}", empleado.getId());
-        String query = "UPDATE adminPlanillas.Empleados SET inactive_date = ? WHERE Id = " + empleado.getId();
+        String query = "UPDATE adminPlanillas.empleados SET Inactive_Date = ? WHERE Id = " + empleado.getId();
         try (Connection connection = ConnectionManager.produceConnection();
                 PreparedStatement pstmt = connection.prepareStatement(query);) {
             pstmt.setDate(1, new java.sql.Date(new Date().getTime()));
@@ -110,7 +110,7 @@ public class EmpleadoDAO {
     public boolean actualizarEmpleado(Empleado empleado) {
         boolean result = false;
         LOGGER.log(Level.INFO, "Eliminando empleado {0}", empleado.getId());
-        String query = "UPDATE adminPlanillas.Empleados SET Nombre = ?, Apellido = ?, Fecha_Nac = ? WHERE Id = " + empleado.getId();
+        String query = "UPDATE adminPlanillas.empleados SET Nombre = ?, Apellido = ?, Fecha_Nac = ? WHERE Id = " + empleado.getId();
         try (Connection connection = ConnectionManager.produceConnection();
                 PreparedStatement pstmt = connection.prepareStatement(query);) {
             pstmt.setString(1, empleado.getNombre());
