@@ -29,17 +29,19 @@
                         <h:outputLabel for="apellidoAmpleado" value="Apellido: "></h:outputLabel>
                         <p:inputText id = "apellidoAmpleado"  required="true" requiredMessage="Por favor ingrese su apellido"
                                      value="#{empleadoBean.selectedEmpleado.apellido}" ></p:inputText>
-
+                        
                         <h:outputLabel for="fechaNacEmpleado" value="Fecha Nacimiento: "></h:outputLabel>
-                        <p:calendar navigator="true" value="#{empleadoBean.selectedEmpleado.fecha_nac}" required="true" 
+                        <p:calendar navigator="true" value="#{empleadoBean.selectedEmpleado.fecha_nac}" required="true" id="fechaNacEmpleado"
                                     requiredMessage="Por favor ingrese su fecha de nacimiento"
-                                    yearRange="c-120:c" pattern="MM/dd/yyyy" ></p:calendar>
+                                    yearRange="c-120:c"  pattern="yyyy/MM/dd" ></p:calendar>
 
                         <p:commandButton value="Submit" action="#{empleadoBean.agregarData(empleadoBean.selectedEmpleado)}" validateClient="true" ajax="false">
                         </p:commandButton>
                         
                     </p:panelGrid>
                 </h:form>
+                <br/>
+                 <ui:include src="../tables/tablaEmpleado.xhtml"/>
             </div>
         </div>
     </ui:composition>

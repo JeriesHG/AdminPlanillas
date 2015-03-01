@@ -11,3 +11,15 @@ and open the template in the editor.
 .content-panel-grid tr, .content-panel-grid td{
     border: 0 !important;
 }
+
+.blankButton{
+    background: none !important;
+    border: none !important;
+    display:inline-block !important;
+    box-shadow: none;
+}
+.ui-row-editor{
+    display: inline-block;
+    float: left;
+    margin-top: 3.8%;
+}

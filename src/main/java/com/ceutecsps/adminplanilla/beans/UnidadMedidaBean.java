@@ -12,6 +12,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import org.primefaces.event.RowEditEvent;
 
 /**
  *
@@ -58,6 +59,16 @@ public class UnidadMedidaBean extends AbstractBean {
     public String eliminarData(Object objeto) {
         boolean result = unidadDAO.eliminarUnidadMedida(((Unidad) objeto));
         return "unidadMedida?faces-redirect=true&amp;result=" + result;
+    }
+
+    @Override
+    public void onRowEdit(RowEditEvent event) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void onRowCancel(RowEditEvent event) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public List<Unidad> getListaUnidadMedida() {

@@ -42,7 +42,7 @@ public class Empleado extends AbstractDoc{
     }
 
     public void setFecha_nac(Date fecha_nac) {
-        this.fecha_nac = fecha_nac;
+        this.fecha_nac = new java.sql.Date(fecha_nac.getTime());
     }
 
 }

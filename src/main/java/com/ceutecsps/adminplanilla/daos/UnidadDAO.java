@@ -60,18 +60,18 @@ public class UnidadDAO {
      * @return true si se inserto correctamente
      */
     public boolean agregarUnidadDeMedida(Unidad unidadMedida) {
-        boolean result = false;
+        int result = 0;
         String query = "INSERT INTO adminPlanillas.unidades (Descripcion) values (?,?,?)";
         LOGGER.log(Level.INFO, "Insertando Unidad de Medida con ID: {0}", unidadMedida.getId());
         try (Connection connection = ConnectionManager.produceConnection();
                 PreparedStatement pstmt = connection.prepareStatement(query);) {
             pstmt.setString(1, unidadMedida.getDescripcion());
-            result = pstmt.execute();
+            result = pstmt.executeUpdate();
             LOGGER.log(Level.INFO, "Resultado Agregar Data - Result: {0}", result);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "insertarData Error: {0}", e);
         }
-        return result;
+        return result > 0;
     }
 
     /**
@@ -82,18 +82,18 @@ public class UnidadDAO {
      * @return true si se elimino bien
      */
     public boolean eliminarUnidadMedida(Unidad unidadMedida) {
-        boolean result = false;
+        int count = 0;
         LOGGER.log(Level.INFO, "Eliminando UnidadMedida {0}", unidadMedida.getId());
         String query = "UPDATE adminPlanillas.unidades SET Inactive_Date = ? WHERE Id = " + unidadMedida.getId();
         try (Connection connection = ConnectionManager.produceConnection();
                 PreparedStatement pstmt = connection.prepareStatement(query);) {
             pstmt.setDate(1, new java.sql.Date(new Date().getTime()));
-            int count = pstmt.executeUpdate();
+            count = pstmt.executeUpdate();
             LOGGER.log(Level.INFO, "Resultado Eliminar Data - Row Count: {0}", count);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "eliminarData Error: {0}", e);
         }
-        return result;
+        return count > 0;
     }
 
     /**
@@ -103,18 +103,18 @@ public class UnidadDAO {
      * @return true si se actualizo bien
      */
     public boolean actualizarUnidadDeMedida(Unidad unidadMedida) {
-        boolean result = false;
+        int result = 0;
         LOGGER.log(Level.INFO, "Actualizando unidad de medida {0}", unidadMedida.getId());
         String query = "UPDATE adminPlanillas.unidades SET Descripcion = ? WHERE Id = " + unidadMedida.getId();
         try (Connection connection = ConnectionManager.produceConnection();
                 PreparedStatement pstmt = connection.prepareStatement(query);) {
             pstmt.setString(1, unidadMedida.getDescripcion());
-            result = pstmt.execute();
+            result = pstmt.executeUpdate();
             LOGGER.log(Level.INFO, "Resultado Eliminar Data - Row Result: {0}", result);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "AgregarData Error: {0}", e);
         }
-        return result;
+        return result > 0;
     }
 
 }

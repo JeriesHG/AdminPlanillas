@@ -26,10 +26,6 @@
                         <p:inputText id = "descripcionUnidadMedida"  required="true" requiredMessage="Por favor ingrese una descripcion"
                                      value="#{unidadMedidaBean.selectedUnidadDeMedida.descripcion}"></p:inputText>
 
-                        <h:outputLabel for="unidadDeMedida" value="Unidad: "></h:outputLabel>
-                        <p:inputText id = "unidadDeMedida"  required="true" requiredMessage="Por favor ingrese una unidad de medida"
-                                     value="#{unidadMedidaBean.selectedUnidadDeMedida.unidad}" ></p:inputText>
-
                         <p:commandButton value="Submit" action="#{unidadMedidaBean.agregarData(unidadMedidaBean.selectedUnidadDeMedida)}" validateClient="true" ajax="false">
                         </p:commandButton>
                         

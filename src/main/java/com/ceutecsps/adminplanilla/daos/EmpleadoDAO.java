@@ -62,7 +62,7 @@ public class EmpleadoDAO {
      * @return true si se inserto correctamente
      */
     public boolean insertarEmpleado(Empleado empleado) {
-        boolean result = false;
+        int result = 0;
         String query = "INSERT INTO adminPlanillas.empleados (Nombre,Apellido,Fecha_Nac) values (?,?,?)";
         LOGGER.log(Level.INFO, "Insertando Empleado con ID: {0}", empleado.getId());
         try (Connection connection = ConnectionManager.produceConnection();
@@ -70,12 +70,12 @@ public class EmpleadoDAO {
             pstmt.setString(1, empleado.getNombre());
             pstmt.setString(2, empleado.getApellido());
             pstmt.setDate(3, new java.sql.Date(empleado.getFecha_nac().getTime()));
-            result = pstmt.execute();
+            result = pstmt.executeUpdate();
             LOGGER.log(Level.INFO, "Resultado Agregar Data - Result: {0}", result);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "AgregarData Error: {0}", e);
         }
-        return result;
+        return result > 0;
     }
 
     /**
@@ -86,18 +86,18 @@ public class EmpleadoDAO {
      * @return true si se elimino bien
      */
     public boolean eliminarEmpleado(Empleado empleado) {
-        boolean result = false;
+        int result = 0;
         LOGGER.log(Level.INFO, "Eliminando empleado {0}", empleado.getId());
         String query = "UPDATE adminPlanillas.empleados SET Inactive_Date = ? WHERE Id = " + empleado.getId();
         try (Connection connection = ConnectionManager.produceConnection();
                 PreparedStatement pstmt = connection.prepareStatement(query);) {
             pstmt.setDate(1, new java.sql.Date(new Date().getTime()));
-            result = pstmt.execute();
+            result = pstmt.executeUpdate();
             LOGGER.log(Level.INFO, "Resultado Eliminar Data - Row Result: {0}", result);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "eliminar Error: {0}", e);
         }
-        return result;
+        return result>0;
     }
 
     /**
@@ -108,7 +108,7 @@ public class EmpleadoDAO {
      * @return true si se actualizo bien
      */
     public boolean actualizarEmpleado(Empleado empleado) {
-        boolean result = false;
+        int result = 0;
         LOGGER.log(Level.INFO, "Eliminando empleado {0}", empleado.getId());
         String query = "UPDATE adminPlanillas.empleados SET Nombre = ?, Apellido = ?, Fecha_Nac = ? WHERE Id = " + empleado.getId();
         try (Connection connection = ConnectionManager.produceConnection();
@@ -116,12 +116,36 @@ public class EmpleadoDAO {
             pstmt.setString(1, empleado.getNombre());
             pstmt.setString(2, empleado.getApellido());
             pstmt.setDate(3, new java.sql.Date(empleado.getFecha_nac().getTime()));
-            result = pstmt.execute();
+            result = pstmt.executeUpdate();
             LOGGER.log(Level.INFO, "Resultado actualizar Data - Row Result: {0}", result);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "actualizar Error: {0}", e);
         }
-        return result;
+        return result>0;
+    }
+    
+     public Empleado buscarEmpleado(String id) {
+        String query = "SELECT * FROM adminPlanillas.empleados"
+                + " WHERE Id = " +id;
+        LOGGER.log(Level.INFO, "BUSCANDO EMPLEADO CON ID #{0}",id);
+        try (Connection connection = ConnectionManager.produceConnection();
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(query)) {
+            while (resultSet.next()) {
+                if (resultSet.getDate("Inactive_Date") == null) {
+                    Empleado empleado = new Empleado();
+                    empleado.setId(resultSet.getInt("Id"));
+                    empleado.setNombre(resultSet.getString("Nombre"));
+                    empleado.setApellido(resultSet.getString("Apellido"));
+                    empleado.setFecha_nac(resultSet.getDate("Fecha_Nac"));
+                    empleado.setInactive_date(resultSet.getDate("Inactive_Date"));
+                    return empleado;
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "buscarEmpleado Error: {0}", e);
+        }
+        return new Empleado();
     }
 
 }
