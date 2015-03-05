@@ -18,8 +18,8 @@
                     <ui:param name="icono" value="fa fa-wrench"/>
                 </ui:include>
 
-                <h:form id="unidadMedidaForm">
-                     <p:messages/>
+                <h:form id="laboresForm">
+                    <p:messages/>
                     <p:panelGrid columns="2" styleClass="content-panel-grid">
 
                         <h:outputLabel for="nombreLabor" value="Nombre: "></h:outputLabel>
@@ -29,19 +29,19 @@
                         <h:outputLabel for="precioLabor" value="Precio "></h:outputLabel>
                         <p:inputText id = "precioLabor"  required="true" requiredMessage="Por favor ingrese un precio"
                                      value="#{laborBean.selectedLabor.precio}" ></p:inputText>
-                        
-                        <h:outputLabel for="fechaNacEmpleado" value="Fecha Nacimiento: "></h:outputLabel>
-                        <p:selectOneMenu value = "#{laborBean.selectedLabor.unidad}" converter="omnifaces.SelectItemsIndexConverter">
+
+                        <h:outputLabel value="Unidad: " for="unidadLabor"></h:outputLabel>
+                        <p:selectOneMenu id = "unidadLabor" value = "#{laborBean.selectedLabor.unidad}" converter="omnifaces.SelectItemsConverter" >
                             <f:selectItems value="#{unidadMedidaBean.listaUnidadMedida}" var="unidad" itemLabel="#{unidad.descripcion}" itemValue="#{unidad}"/>
                         </p:selectOneMenu>
 
                         <p:commandButton value="Submit" action="#{laborBean.agregarData(laborBean.selectedLabor)}" validateClient="true" ajax="false">
                         </p:commandButton>
-                        
+
                     </p:panelGrid>
                 </h:form>
                 <br/>
-                 <!--<ui:include src="../tables/tablaUnidadDeMedida.xhtml"/>-->
+                <ui:include src="../tables/tablaLabores.xhtml"/>
             </div>
         </div>
     </ui:composition>

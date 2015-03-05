@@ -26,23 +26,32 @@
                         <f:facet name="output"><h:outputText value="#{labor.nombre}"/></f:facet>
                         <f:facet name="input">
                             <p:inputText id = "nombreLaborTabla"  required="true" requiredMessage="Por favor ingrese una descripcion"
-                                          value="#{labor.nombre}"></p:inputText>
+                                         value="#{labor.nombre}"></p:inputText>
                         </f:facet>
                     </p:cellEditor>
                 </p:column>
-                 <p:column headerText="Precio">
+                <p:column headerText="Precio">
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{labor.precio}"/></f:facet>
                         <f:facet name="input">
                             <p:inputText id = "precioLaborTabla"  required="true" requiredMessage="Por favor ingrese una descripcion"
-                                          value="#{labor.precio}"></p:inputText>
+                                         value="#{labor.precio}"></p:inputText>
                         </f:facet>
                     </p:cellEditor>
                 </p:column>
-                
+                <p:column headerText="Unidad">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{labor.unidad.descripcion}"/></f:facet>
+                        <f:facet name="input">
+                            <p:selectOneMenu value = "#{labor.unidad}" converter="omnifaces.SelectItemsConverter">
+                                <f:selectItems value="#{unidadMedidaBean.listaUnidadMedida}" var="unidad" itemLabel="#{unidad.descripcion}" itemValue="#{unidad}"/>
+                            </p:selectOneMenu>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
                 <p:column >
                     <p:rowEditor />
-                    <p:commandButton icon = "ui-icon-trash" styleClass="blankButton" action="#{laborBean.eliminarData(unidad)}"/>
+                    <p:commandButton icon = "ui-icon-trash" styleClass="blankButton" action="#{laborBean.eliminarData(labor)}"/>
                 </p:column>
             </p:dataTable>
         </h:form>
