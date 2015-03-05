@@ -51,15 +51,15 @@ public class LaborBean extends AbstractBean {
         if(updateable){
             this.setUpdateable(false);
             boolean result = laborDAO.update((Labor) objeto);
-            return "empleado?faces-redirect=true&amp;result="+result+"&amp;id=" + ((Labor) objeto).getId();
+            return "labores?faces-redirect=true&amp;result="+result+"&amp;id=" + ((Labor) objeto).getId();
         }
-         return "empleado?faces-redirect=true&amp;updateable=true&amp;id=" + ((Labor) objeto).getId();
+         return "labores?faces-redirect=true&amp;updateable=true&amp;id=" + ((Labor) objeto).getId();
     }
 
     @Override
     public String eliminarData(Object objeto) {
         boolean result = laborDAO.delete((Labor) objeto);
-        return "empleado?faces-redirect=true&amp;result="+result;
+        return "labores?faces-redirect=true&amp;result="+result;
     }
     
     @Override
