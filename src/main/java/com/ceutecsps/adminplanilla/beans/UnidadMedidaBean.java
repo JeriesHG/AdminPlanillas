@@ -35,40 +35,39 @@ public class UnidadMedidaBean extends AbstractBean {
 
     @Override
     public void mostrarData() {
-        listaUnidadMedida = unidadDAO.readUnidadMedidas();
+        listaUnidadMedida = unidadDAO.readAll();
     }
 
     @Override
     public String agregarData(Object objeto) {
-        boolean result = unidadDAO.agregarUnidadDeMedida(((Unidad) objeto));
+        boolean result = unidadDAO.insert(((Unidad) objeto));
         selectedUnidadDeMedida = UnidadFactory.produceUnidadDeMedida();
-        return "unidadMedida?faces-redirect=true&amp;result=" + result;
+        return "unidadDeMedida?faces-redirect=true&amp;result=" + result;
     }
 
     @Override
     public String modificarData(Object objeto, boolean updateable) {
         if (updateable) {
             this.setUpdateable(false);
-            boolean result = unidadDAO.actualizarUnidadDeMedida(((Unidad) objeto));
-            return "unidadMedida?faces-redirect=true&amp;result=" + result + "&amp;id=" + ((Unidad) objeto).getId();
+            boolean result = unidadDAO.update(((Unidad) objeto));
+            return "unidadDeMedida?faces-redirect=true&amp;result=" + result + "&amp;id=" + ((Unidad) objeto).getId();
         }
-        return "unidadMedida?faces-redirect=true&amp;saveable=true&amp;id=" + ((Unidad) objeto).getId();
+        return "unidadDeMedida?faces-redirect=true&amp;saveable=true&amp;id=" + ((Unidad) objeto).getId();
     }
 
     @Override
     public String eliminarData(Object objeto) {
-        boolean result = unidadDAO.eliminarUnidadMedida(((Unidad) objeto));
-        return "unidadMedida?faces-redirect=true&amp;result=" + result;
+        boolean result = unidadDAO.delete(((Unidad) objeto));
+        return "unidadDeMedida?faces-redirect=true&amp;result=" + result;
     }
 
     @Override
     public void onRowEdit(RowEditEvent event) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        modificarData(event.getObject(), true);
     }
 
     @Override
     public void onRowCancel(RowEditEvent event) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public List<Unidad> getListaUnidadMedida() {

@@ -8,7 +8,35 @@
         xmlns:p="http://primefaces.org/ui">
 
     <ui:composition >
-       
+
+        <h:form id="tablaUnidadForm">
+            <p:growl id="msgs" showDetail="true"/>
+            <p:dataTable value="#{unidadMedidaBean.listaUnidadMedida}" var = "unidad" rows="10" editable="true"
+                         paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15">
+
+                <p:ajax event="rowEdit" listener="#{unidadMedidaBean.onRowEdit}" update=":tablaUnidadForm:msgs" />
+                <p:ajax event="rowEditCancel" listener="#{unidadMedidaBean.onRowCancel}" update=":tablaUnidadForm:msgs" />
+
+                <p:column headerText="ID">
+                    <h:outputText value="#{unidad.id}"/>
+                </p:column>
+                <p:column headerText="Descripcion">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{unidad.descripcion}"/></f:facet>
+                        <f:facet name="input">
+                            <p:inputText id = "nombreUnidadTabla"  required="true" requiredMessage="Por favor ingrese una descripcion"
+                                          value="#{unidad.descripcion}"></p:inputText>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                
+                <p:column >
+                    <p:rowEditor />
+                    <p:commandButton icon = "ui-icon-trash" styleClass="blankButton" action="#{unidadMedidaBean.eliminarData(unidad)}"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
     </ui:composition>
 
 </f:view>

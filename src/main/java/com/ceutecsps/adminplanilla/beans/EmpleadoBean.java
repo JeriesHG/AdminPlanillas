@@ -37,7 +37,7 @@ public class EmpleadoBean extends AbstractBean {
         
 //        if(UtilityClass.getURLParameter("updateable") != null){
 //           if(Boolean.parseBoolean(UtilityClass.getURLParameter("updateable"))){
-//               selectedEmpleado = empleadoDAO.buscarEmpleado(UtilityClass.getURLParameter("id"));
+//               selectedEmpleado = empleadoDAO.find(UtilityClass.getURLParameter("id"));
 //           }
 //        }
      
@@ -45,12 +45,12 @@ public class EmpleadoBean extends AbstractBean {
 
     @Override
     public void mostrarData() {
-        listaEmpleados = empleadoDAO.readEmpleados();
+        listaEmpleados = empleadoDAO.readAll();
     }
 
     @Override
     public String agregarData(Object objeto) {
-        boolean result = empleadoDAO.insertarEmpleado((Empleado) objeto);
+        boolean result = empleadoDAO.insert((Empleado) objeto);
         selectedEmpleado = EmpleadoFactory.produceEmpleado();
         return "empleado?faces-redirect=true&amp;result="+result;
     }
@@ -59,7 +59,7 @@ public class EmpleadoBean extends AbstractBean {
     public String modificarData(Object objeto, boolean updateable) {
         if(updateable){
             this.setUpdateable(false);
-            boolean result = empleadoDAO.actualizarEmpleado((Empleado) objeto);
+            boolean result = empleadoDAO.update((Empleado) objeto);
             return "empleado?faces-redirect=true&amp;result="+result+"&amp;id=" + ((Empleado) objeto).getId();
         }
          return "empleado?faces-redirect=true&amp;updateable=true&amp;id=" + ((Empleado) objeto).getId();
@@ -67,7 +67,7 @@ public class EmpleadoBean extends AbstractBean {
 
     @Override
     public String eliminarData(Object objeto) {
-        boolean result = empleadoDAO.eliminarEmpleado((Empleado) objeto);
+        boolean result = empleadoDAO.delete((Empleado) objeto);
         return "empleado?faces-redirect=true&amp;result="+result;
     }
     

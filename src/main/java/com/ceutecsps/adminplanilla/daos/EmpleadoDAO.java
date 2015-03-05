@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  *
  * @author Jeries
  */
-public class EmpleadoDAO {
+public class EmpleadoDAO implements IDAO{
 
     private static final Logger LOGGER = Logger.getLogger(EmpleadoDAO.class.getName());
 
@@ -30,7 +30,8 @@ public class EmpleadoDAO {
      *
      * @return lista de empleados
      */
-    public List<Empleado> readEmpleados() {
+    @Override
+    public List<Empleado> readAll() {
         List listaEmpleados = new ArrayList();
         String query = "SELECT * FROM adminPlanillas.empleados";
         LOGGER.log(Level.INFO, "Cargando Lista de Empleados");
@@ -58,10 +59,12 @@ public class EmpleadoDAO {
      * Se envia un empleado, ya pasando las validaciones, y se inserta en la
      * tabla Empleados
      *
-     * @param empleado
+     * @param object
      * @return true si se inserto correctamente
      */
-    public boolean insertarEmpleado(Empleado empleado) {
+    @Override
+    public boolean insert(Object object) {
+        Empleado empleado = (Empleado) object;
         int result = 0;
         String query = "INSERT INTO adminPlanillas.empleados (Nombre,Apellido,Fecha_Nac) values (?,?,?)";
         LOGGER.log(Level.INFO, "Insertando Empleado con ID: {0}", empleado.getId());
@@ -82,10 +85,12 @@ public class EmpleadoDAO {
      * Se envia un empleado para marcar como borrado el empleado seleccionado Se
      * llena el campo inactive_date para marcar como borrado
      *
-     * @param empleado
+     * @param object
      * @return true si se elimino bien
      */
-    public boolean eliminarEmpleado(Empleado empleado) {
+    @Override
+    public boolean delete(Object object) {
+        Empleado empleado = (Empleado) object;
         int result = 0;
         LOGGER.log(Level.INFO, "Eliminando empleado {0}", empleado.getId());
         String query = "UPDATE adminPlanillas.empleados SET Inactive_Date = ? WHERE Id = " + empleado.getId();
@@ -104,10 +109,12 @@ public class EmpleadoDAO {
      * Se envia un empleado para actualizar ciertos campos: Nombre, Apellido y
      * Fecha de Nacimiento
      *
-     * @param empleado
+     * @param object
      * @return true si se actualizo bien
      */
-    public boolean actualizarEmpleado(Empleado empleado) {
+    @Override
+    public boolean update(Object object) {
+        Empleado empleado = (Empleado) object;
         int result = 0;
         LOGGER.log(Level.INFO, "Eliminando empleado {0}", empleado.getId());
         String query = "UPDATE adminPlanillas.empleados SET Nombre = ?, Apellido = ?, Fecha_Nac = ? WHERE Id = " + empleado.getId();
@@ -124,7 +131,8 @@ public class EmpleadoDAO {
         return result>0;
     }
     
-     public Empleado buscarEmpleado(String id) {
+    @Override
+     public Object find(int id) {
         String query = "SELECT * FROM adminPlanillas.empleados"
                 + " WHERE Id = " +id;
         LOGGER.log(Level.INFO, "BUSCANDO EMPLEADO CON ID #{0}",id);
