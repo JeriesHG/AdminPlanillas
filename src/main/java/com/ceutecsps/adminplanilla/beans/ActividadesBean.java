@@ -5,7 +5,10 @@
  */
 package com.ceutecsps.adminplanilla.beans;
 
+import com.ceutecsps.adminplanilla.daos.LaborDAO;
 import com.ceutecsps.adminplanilla.documents.Actividad;
+import com.ceutecsps.adminplanilla.documents.Empleado;
+import com.ceutecsps.adminplanilla.documents.Labor;
 import com.ceutecsps.adminplanilla.utilities.UtilityClass;
 import java.io.Serializable;
 import java.text.ParseException;
@@ -13,7 +16,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -23,6 +28,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
+import org.omnifaces.util.Faces;
 import org.primefaces.event.CellEditEvent;
 
 /**
@@ -38,6 +44,7 @@ public class ActividadesBean implements Serializable {
     private List<Actividad> listaActividades;
     private final SimpleDateFormat formatoEstandar = new SimpleDateFormat("yyyy/MM/dd");
     private boolean renderizarTablaActividad;
+    private Map<String, Map<String, String>> mapShowSelectedLabor;
 
     @PostConstruct
     public void inicializarClase() {
@@ -47,6 +54,7 @@ public class ActividadesBean implements Serializable {
 
     public void generarNuevaActividad() {
         try {
+            mapShowSelectedLabor = new HashMap();
             if (Days.daysBetween(new DateTime(fromDate), new DateTime(toDate)).getDays() == 4) {
                 generarListaFechas(fromDate, toDate);
                 renderizarTablaActividad = true;
@@ -59,6 +67,26 @@ public class ActividadesBean implements Serializable {
         }
     }
 
+    public void onCellEdit(CellEditEvent event) {
+        Empleado empleado = Faces.evaluateExpressionGet("#{empleado}");
+        String valorSeleccionado = event.getNewValue()+"";
+       llenarMapaLaborSeleccionado(valorSeleccionado, event.getColumn().getHeaderText(), empleado);
+    }
+
+    /**
+     * Metodo que llena un mapa para mostrar la labor seleccionada, en donde se envia el labor name, la fecha (header text) y el empleado para el nombre.
+     * Es un mapa con otro mapa dentro, ya que un nombre de empleado puede tener varias fechas. Se mapea elempleado con un mapa de fechas como KEY y nombre de Labor como VALUE
+     * @param valorSeleccionado
+     * @param headerText
+     * @param empleado
+     */
+    private void llenarMapaLaborSeleccionado(String valorSeleccionado, String headerText, Empleado empleado)  {
+        Map<String, String> test = new HashMap();
+        Labor labor = (Labor) new LaborDAO().find(Integer.parseInt(valorSeleccionado));
+        test.put(headerText, labor.getNombre());
+        this.mapShowSelectedLabor.put(empleado.getNombre(), test);
+    }
+
     private void generarListaFechas(Date from, Date to) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(from);
@@ -67,10 +95,6 @@ public class ActividadesBean implements Serializable {
             cal.add(Calendar.DATE, 1);
         }
         UtilityClass.deleteDuplicate(listaFechas);
-    }
-
-    public void onCellEdit(CellEditEvent event) {
-        System.out.println(event.getNewValue());
     }
 
     public List<String> getListaFechas() {
@@ -111,6 +135,14 @@ public class ActividadesBean implements Serializable {
 
     public void setRenderizarTablaActividad(boolean renderizarTablaActividad) {
         this.renderizarTablaActividad = renderizarTablaActividad;
+    }
+
+    public Map<String, Map<String, String>> getMapShowSelectedLabor() {
+        return mapShowSelectedLabor;
+    }
+
+    public void setMapShowSelectedLabor(Map<String, Map<String, String>> mapShowSelectedLabor) {
+        this.mapShowSelectedLabor = mapShowSelectedLabor;
     }
 
 }

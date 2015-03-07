@@ -24,46 +24,59 @@
                     </p:column>
                     <p:column headerText="#{actividadesBean.listaFechas.get(0)}" >
                         <p:cellEditor>
-                            <f:facet name="output">Escriba Labor</f:facet>
+                            <f:facet name="output">#{actividadesBean.mapShowSelectedLabor.get(empleado.nombre).get(actividadesBean.listaFechas.get(0))}</f:facet>
                             <f:facet name="input">
-                                <p:selectOneMenu >
+                                <p:selectOneMenu style="width:100%;">
+                                    <f:selectItem itemLabel="Selecciona labor" itemDisabled="true"/>
                                     <f:selectItems value="#{laborBean.listaLabores}" var="labor" itemLabel="#{labor.nombre}" itemValue="#{labor.id}"/>
                                 </p:selectOneMenu>
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
-<!--                    <p:column headerText="#{actividadesBean.listaFechas.get(1)}">
+                    <p:column headerText="#{actividadesBean.listaFechas.get(1)}" >
                         <p:cellEditor>
-                            <f:facet name="output"></f:facet>
+                            <f:facet name="output">#{actividadesBean.mapShowSelectedLabor.get(empleado.nombre).get(actividadesBean.listaFechas.get(1))}</f:facet>
                             <f:facet name="input">
-                                
+                                <p:selectOneMenu style="width:100%;">
+                                    <f:selectItem itemLabel="Selecciona labor" itemDisabled="true"/>
+                                    <f:selectItems value="#{laborBean.listaLabores}" var="labor" itemLabel="#{labor.nombre}" itemValue="#{labor.id}"/>
+                                </p:selectOneMenu>
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
-                    <p:column headerText="#{actividadesBean.listaFechas.get(2)}">
+                    <p:column headerText="#{actividadesBean.listaFechas.get(2)}" >
                         <p:cellEditor>
-                            <f:facet name="output"></f:facet>
+                            <f:facet name="output">#{actividadesBean.mapShowSelectedLabor.get(empleado.nombre).get(actividadesBean.listaFechas.get(2))}</f:facet>
                             <f:facet name="input">
-                                
+                                <p:selectOneMenu style="width:100%;">
+                                    <f:selectItem itemLabel="Selecciona labor" itemDisabled="true"/>
+                                    <f:selectItems value="#{laborBean.listaLabores}" var="labor" itemLabel="#{labor.nombre}" itemValue="#{labor.id}"/>
+                                </p:selectOneMenu>
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
-                    <p:column headerText="#{actividadesBean.listaFechas.get(3)}">
+                    <p:column headerText="#{actividadesBean.listaFechas.get(3)}" >
                         <p:cellEditor>
-                            <f:facet name="output"></f:facet>
+                            <f:facet name="output">#{actividadesBean.mapShowSelectedLabor.get(empleado.nombre).get(actividadesBean.listaFechas.get(3))}</f:facet>
                             <f:facet name="input">
-                                
+                                <p:selectOneMenu style="width:100%;">
+                                    <f:selectItem itemLabel="Selecciona labor" itemDisabled="true"/>
+                                    <f:selectItems value="#{laborBean.listaLabores}" var="labor" itemLabel="#{labor.nombre}" itemValue="#{labor.id}"/>
+                                </p:selectOneMenu>
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
-                    <p:column headerText="#{actividadesBean.listaFechas.get(4)}">
+                    <p:column headerText="#{actividadesBean.listaFechas.get(4)}" >
                         <p:cellEditor>
-                            <f:facet name="output"></f:facet>
+                            <f:facet name="output">#{actividadesBean.mapShowSelectedLabor.get(empleado.nombre).get(actividadesBean.listaFechas.get(4))}</f:facet>
                             <f:facet name="input">
-                                
+                                <p:selectOneMenu style="width:100%;">
+                                    <f:selectItem itemLabel="Selecciona labor" itemDisabled="true"/>
+                                    <f:selectItems value="#{laborBean.listaLabores}" var="labor" itemLabel="#{labor.nombre}" itemValue="#{labor.id}"/>
+                                </p:selectOneMenu>
                             </f:facet>
                         </p:cellEditor>
-                    </p:column>-->
+                    </p:column>
 
                 </p:dataTable>
             </h:panelGroup>
