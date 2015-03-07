@@ -10,20 +10,60 @@
     <ui:composition>
 
         <!--<h:form id="tablaActividades" >-->
-        #{actividadesBean.renderizarTablaActividad}"
         <h:panelGroup id="tablaActidadesWrapper">
             <h:panelGroup rendered="#{actividadesBean.renderizarTablaActividad}">
                 <p:growl id="msgs" showDetail="true"/>
-                <p:dataTable value="#{empleadoBean.listaEmpleados}" var = "empleado" rows="10" editable="true"
+                <p:dataTable value="#{empleadoBean.listaEmpleados}" var = "empleado" rows="10" editable="true" editMode="cell"
                              paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="5,10,15">
+
+                    <p:ajax event="cellEdit" listener="#{actividadesBean.onCellEdit}"  update=":actividadesForm:msgs"/>
 
                     <p:column headerText="Empleado">
                         <h:outputText value="#{empleado.nombre}"/>
                     </p:column>
-                    <p:column headerText="Empleado">
-                        <h:outputText value="#{empleado.nombre}"/>
+                    <p:column headerText="#{actividadesBean.listaFechas.get(0)}" >
+                        <p:cellEditor>
+                            <f:facet name="output">Escriba Labor</f:facet>
+                            <f:facet name="input">
+                                <p:selectOneMenu >
+                                    <f:selectItems value="#{laborBean.listaLabores}" var="labor" itemLabel="#{labor.nombre}" itemValue="#{labor.id}"/>
+                                </p:selectOneMenu>
+                            </f:facet>
+                        </p:cellEditor>
                     </p:column>
+<!--                    <p:column headerText="#{actividadesBean.listaFechas.get(1)}">
+                        <p:cellEditor>
+                            <f:facet name="output"></f:facet>
+                            <f:facet name="input">
+                                
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="#{actividadesBean.listaFechas.get(2)}">
+                        <p:cellEditor>
+                            <f:facet name="output"></f:facet>
+                            <f:facet name="input">
+                                
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="#{actividadesBean.listaFechas.get(3)}">
+                        <p:cellEditor>
+                            <f:facet name="output"></f:facet>
+                            <f:facet name="input">
+                                
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="#{actividadesBean.listaFechas.get(4)}">
+                        <p:cellEditor>
+                            <f:facet name="output"></f:facet>
+                            <f:facet name="input">
+                                
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>-->
 
                 </p:dataTable>
             </h:panelGroup>

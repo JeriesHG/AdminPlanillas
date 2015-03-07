@@ -6,6 +6,7 @@
 package com.ceutecsps.adminplanilla.beans;
 
 import com.ceutecsps.adminplanilla.documents.Actividad;
+import com.ceutecsps.adminplanilla.utilities.UtilityClass;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,7 +17,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -30,7 +30,7 @@ import org.primefaces.event.CellEditEvent;
  * @author Jeries
  */
 @Named
-@SessionScoped
+@ViewScoped
 public class ActividadesBean implements Serializable {
 
     private Date fromDate, toDate;
@@ -41,24 +41,22 @@ public class ActividadesBean implements Serializable {
 
     @PostConstruct
     public void inicializarClase() {
+        listaFechas = new ArrayList();
+        listaActividades = new ArrayList();
     }
 
-    public String generarNuevaActividad() {
+    public void generarNuevaActividad() {
         try {
-            listaFechas = new ArrayList();
-            listaActividades = new ArrayList();
             if (Days.daysBetween(new DateTime(fromDate), new DateTime(toDate)).getDays() == 4) {
                 generarListaFechas(fromDate, toDate);
                 renderizarTablaActividad = true;
-                return "actividades";
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Por favor escoger 1 semana solamente (5 dias)"));
                 renderizarTablaActividad = false;
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Por favor escoger 1 semana solamente (5 dias)"));
             }
         } catch (Exception ex) {
             Logger.getLogger(ActividadesBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return "actividades";
     }
 
     private void generarListaFechas(Date from, Date to) {
@@ -68,10 +66,11 @@ public class ActividadesBean implements Serializable {
             listaFechas.add(formatoEstandar.format(cal.getTime()));
             cal.add(Calendar.DATE, 1);
         }
+        UtilityClass.deleteDuplicate(listaFechas);
     }
 
     public void onCellEdit(CellEditEvent event) {
-
+        System.out.println(event.getNewValue());
     }
 
     public List<String> getListaFechas() {
