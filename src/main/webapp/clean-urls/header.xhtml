@@ -1,11 +1,11 @@
 <f:view  xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:f="http://java.sun.com/jsf/core"
-        xmlns:h="http://java.sun.com/jsf/html"
-        xmlns:ui="http://java.sun.com/jsf/facelets"
-        xmlns:o="http://omnifaces.org/ui"
-        xmlns:c="http://java.sun.com/jsp/jstl/core"
-        xmlns:p="http://primefaces.org/ui"
-        xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+         xmlns:f="http://java.sun.com/jsf/core"
+         xmlns:h="http://java.sun.com/jsf/html"
+         xmlns:ui="http://java.sun.com/jsf/facelets"
+         xmlns:o="http://omnifaces.org/ui"
+         xmlns:c="http://java.sun.com/jsp/jstl/core"
+         xmlns:p="http://primefaces.org/ui"
+         xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
     <ui:composition>
         <!-- Navigation -->
@@ -28,24 +28,38 @@
                     <li >
                         <a href="homePage.xhtml"><i class="fa fa-fw fa-dashboard"></i> Inicio</a>
                     </li>
-                    <li >
-                        <a href="empleado.xhtml"><i class="fa fa-fw fa-wrench"></i> Empleado</a>
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#administrador"><i class="fa fa-fw fa-wrench"></i> Administrador <i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="administrador" class="collapse">
+                            <li >
+                                <a href="empleado.xhtml"><i></i> Empleado</a>
+                            </li>
+                            <li >
+                                <a href="unidadDeMedida.xhtml"><i></i> Unidad de Medida</a>
+                            </li>
+                            <li >
+                                <a href="labores.xhtml"><i></i> Labores</a>
+                            </li>
+                        </ul>
                     </li>
-                    <li >
-                        <a href="unidadDeMedida.xhtml"><i class="fa fa-fw fa-wrench"></i> Unidad de Medida</a>
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#actividades"><i class="fa fa-fw fa-arrows-v"></i> Actividades <i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="actividades" class="collapse">
+                            <li >
+                                <a href="actividades.xhtml"><i class="fa fa-pencil fa-fw"></i> Asignar Actividades</a>
+                            </li>
+                            <li >
+                                <a href="listaActividades.xhtml"><i class="fa fa-pencil fa-fw"></i> Ver Actividades</a>
+                            </li>
+                        </ul>
                     </li>
-                    <li >
-                        <a href="labores.xhtml"><i class="fa fa-fw fa-wrench"></i> Labores</a>
-                    </li>
-                     <li >
-                        <a href="actividades.xhtml"><i class="fa fa-pencil fa-fw"></i> Asignar Actividades</a>
-                    </li>
+
                     <!-- LA FORMA EN QUE ESTA COMENTADO ABAJO ES QUE SE AGREGA ALGO NUEVO AL MENU
                         La ruta se le agrega en el href o outcome (si se usa el h:link) y el texto se cambia donde
                     dice Inicio-->
-<!--                    <li >
-                        <a href="homePage.xhtml"><i class="fa fa-fw fa-dashboard"></i> Inicio</a>
-                    </li>-->
+                    <!--                    <li >
+                                            <a href="homePage.xhtml"><i class="fa fa-fw fa-dashboard"></i> Inicio</a>
+                                        </li>-->
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

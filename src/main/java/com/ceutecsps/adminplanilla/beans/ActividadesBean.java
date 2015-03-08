@@ -52,7 +52,7 @@ public class ActividadesBean implements Serializable {
     @PostConstruct
     public void inicializarClase() {
         listaFechas = new ArrayList();
-        listaActividades = new ArrayList();
+        listaActividades = actDAO.readAll();
     }
 
     public void generarNuevaActividad() {
