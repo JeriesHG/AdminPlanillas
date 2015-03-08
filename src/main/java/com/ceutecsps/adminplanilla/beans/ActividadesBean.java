@@ -5,10 +5,12 @@
  */
 package com.ceutecsps.adminplanilla.beans;
 
+import com.ceutecsps.adminplanilla.daos.ActividadDAO;
 import com.ceutecsps.adminplanilla.daos.LaborDAO;
 import com.ceutecsps.adminplanilla.documents.Actividad;
 import com.ceutecsps.adminplanilla.documents.Empleado;
 import com.ceutecsps.adminplanilla.documents.Labor;
+import com.ceutecsps.adminplanilla.factories.ActividadFactory;
 import com.ceutecsps.adminplanilla.utilities.UtilityClass;
 import java.io.Serializable;
 import java.text.ParseException;
@@ -45,6 +47,7 @@ public class ActividadesBean implements Serializable {
     private final SimpleDateFormat formatoEstandar = new SimpleDateFormat("yyyy/MM/dd");
     private boolean renderizarTablaActividad;
     private Map<String, Map<String, String>> mapShowSelectedLabor;
+    private final ActividadDAO actDAO = new ActividadDAO();
 
     @PostConstruct
     public void inicializarClase() {
@@ -67,20 +70,49 @@ public class ActividadesBean implements Serializable {
         }
     }
 
+    public String salvarTodo() {
+        listaActividades.stream().forEach((act) -> {
+            actDAO.insert(act);
+        });
+        return "actividades?faces-redirect=true";
+    }
+
     public void onCellEdit(CellEditEvent event) {
         Empleado empleado = Faces.evaluateExpressionGet("#{empleado}");
-        String valorSeleccionado = event.getNewValue()+"";
-       llenarMapaLaborSeleccionado(valorSeleccionado, event.getColumn().getHeaderText(), empleado);
+        String valorSeleccionado = event.getNewValue() + "";
+        try {
+            Labor labor = (Labor) new LaborDAO().find(Integer.parseInt(valorSeleccionado));
+            if ((Actividad) actDAO.findActividadExistente(empleado.getId(), this.formatoEstandar.parse(event.getColumn().getHeaderText())) == null) {
+                llenarMapaLaborSeleccionado(valorSeleccionado, event.getColumn().getHeaderText(), empleado);
+                Actividad actividad = ActividadFactory.produceActiviad();
+                actividad.setEmpleado(empleado);
+                actividad.setLabor(labor);
+                actividad.setStatus(false);
+                actividad.setFecha(formatoEstandar.parse(event.getColumn().getHeaderText()));
+                actDAO.findActividadExistente(empleado.getId(), this.formatoEstandar.parse(event.getColumn().getHeaderText()));
+                listaActividades.add(actividad);
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", empleado.getNombre()+" ya tiene una actividad asignada para ese dia."));
+            }
+
+        } catch (ParseException ex) {
+            Logger.getLogger(ActividadesBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     /**
-     * Metodo que llena un mapa para mostrar la labor seleccionada, en donde se envia el labor name, la fecha (header text) y el empleado para el nombre.
-     * Es un mapa con otro mapa dentro, ya que un nombre de empleado puede tener varias fechas. Se mapea elempleado con un mapa de fechas como KEY y nombre de Labor como VALUE
+     * Metodo que llena un mapa para mostrar la labor seleccionada, en donde se
+     * envia el labor name, la fecha (header text) y el empleado para el nombre.
+     * Es un mapa con otro mapa dentro, ya que un nombre de empleado puede tener
+     * varias fechas. Se mapea elempleado con un mapa de fechas como KEY y
+     * nombre de Labor como VALUE
+     *
      * @param valorSeleccionado
      * @param headerText
      * @param empleado
      */
-    private void llenarMapaLaborSeleccionado(String valorSeleccionado, String headerText, Empleado empleado)  {
+    private void llenarMapaLaborSeleccionado(String valorSeleccionado, String headerText, Empleado empleado) {
         Map<String, String> test = new HashMap();
         Labor labor = (Labor) new LaborDAO().find(Integer.parseInt(valorSeleccionado));
         test.put(headerText, labor.getNombre());

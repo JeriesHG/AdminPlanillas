@@ -10,14 +10,19 @@
     <ui:composition>
 
         <!--<h:form id="tablaActividades" >-->
-        <h:panelGroup id="tablaActidadesWrapper">
+        <h:panelGroup id="tablaActidadesWrapper" class="tablaActividadesWrapper" layout="block">
+
             <h:panelGroup rendered="#{actividadesBean.renderizarTablaActividad}">
-                <p:growl id="msgs" showDetail="true"/>
+                <div class="guardarTodoWrapper">
+                    <h:commandButton value="Guardar Activdades" action="#{actividadesBean.salvarTodo()}">
+
+                    </h:commandButton>
+                </div>
                 <p:dataTable value="#{empleadoBean.listaEmpleados}" var = "empleado" rows="10" editable="true" editMode="cell"
                              paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="5,10,15">
 
-                    <p:ajax event="cellEdit" listener="#{actividadesBean.onCellEdit}"  update=":actividadesForm:msgs"/>
+                    <p:ajax event="cellEdit" listener="#{actividadesBean.onCellEdit}"  update=":actividadesForm:messages"/>
 
                     <p:column headerText="Empleado">
                         <h:outputText value="#{empleado.nombre}"/>

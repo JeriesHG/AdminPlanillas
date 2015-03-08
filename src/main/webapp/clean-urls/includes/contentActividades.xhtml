@@ -15,7 +15,7 @@
                     <ui:param name="header" value="Actividades"/>
                     <ui:param name="subheader" value=""/>
                     <ui:param name="pagina" value="Actividades"/>
-                    <ui:param name="icono" value="fa fa-wrench"/>
+                    <ui:param name="icono" value="fa fa-pencil fa-fw"/>
                 </ui:include>
 
                 <h:form id="actividadesForm">
@@ -32,10 +32,10 @@
                                     requiredMessage="Por favor ingrese dia fin"
                                     yearRange="c-50:c+50"  pattern="yyyy/MM/dd" ></p:calendar>
                        
-                        <p:commandButton action="#{actividadesBean.generarNuevaActividad}" value="Genera Nueva Activdades" ajax="false" 
+                        <p:commandButton action="#{actividadesBean.generarNuevaActividad}" value="Genera Nueva Actividad" ajax="false" 
                                          validateClient="true" update="messages :actividadesForm:tablaActidadesWrapper"/> 
                     </p:panelGrid>
-                     <br/>
+                    <br/>
                     <ui:include src="../tables/tablaCrearActividades.xhtml"/>
                 </h:form>
             </div>
