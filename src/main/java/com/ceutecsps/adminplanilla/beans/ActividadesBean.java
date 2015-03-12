@@ -32,6 +32,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.omnifaces.util.Faces;
 import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.RowEditEvent;
 
 /**
  *
@@ -92,13 +93,28 @@ public class ActividadesBean implements Serializable {
                 actDAO.findActividadExistente(empleado.getId(), this.formatoEstandar.parse(event.getColumn().getHeaderText()));
                 listaActividades.add(actividad);
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", empleado.getNombre()+" ya tiene una actividad asignada para ese dia."));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", empleado.getNombre() + " ya tiene una actividad asignada para ese dia."));
             }
 
         } catch (ParseException ex) {
             Logger.getLogger(ActividadesBean.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    public void onRowEdit(RowEditEvent event) {
+        Actividad actividad = (Actividad) event.getObject();
+        Logger.getLogger(ActividadesBean.class.getName()).log(Level.INFO, "Modificando fila: {0}", actividad.getId());
+         if ((Actividad) actDAO.findActividadExistente(actividad.getEmpleado().getId(), actividad.getFecha()) == null){
+              this.actDAO.update(actividad);
+         }else{
+             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", actividad.getEmpleado().getNombre() + " ya tiene una actividad asignada para ese dia."));
+         }
+    }
+
+    public void onRowCancel(RowEditEvent event) {
+//        FacesMessage msg = new FacesMessage("Edit Cancelled", ((Car) event.getObject()).getId());
+//        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
     /**
@@ -127,6 +143,11 @@ public class ActividadesBean implements Serializable {
             cal.add(Calendar.DATE, 1);
         }
         UtilityClass.deleteDuplicate(listaFechas);
+    }
+    
+    public String eliminarData(Object object){
+        boolean result = actDAO.delete(object);
+        return "listaActividades?faces-redirect=true&amp;result="+result;
     }
 
     public List<String> getListaFechas() {

@@ -27,7 +27,7 @@ public class Actividad extends AbstractDoc{
     }
 
     public void setFecha(Date fecha) {
-        this.fecha = fecha;
+        this.fecha = new java.sql.Date(fecha.getTime());
     }
 
     public boolean isStatus() {

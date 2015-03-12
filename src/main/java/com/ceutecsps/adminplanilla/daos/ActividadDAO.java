@@ -47,6 +47,7 @@ public class ActividadDAO implements IDAO {
                     actividad.setLabor((Labor) new LaborDAO().find(resultSet.getInt("Id_Labor")));
                     actividad.setEmpleado((Empleado) new EmpleadoDAO().find(resultSet.getInt("Id_Empleado")));
                     actividad.setInactive_date(resultSet.getDate("Inactive_Date"));
+                    actividad.setStatus(resultSet.getBoolean("Status"));
                     listaActividad.add(actividad);
                 }
             }
@@ -129,19 +130,19 @@ public class ActividadDAO implements IDAO {
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(query)) {
             while (resultSet.next()) {
-                if (resultSet.getDate("Inactive_Date") == null) {
+                if (resultSet.getDate("Inactive_Date") == null && !resultSet.getBoolean("Status")) {
                     actividad = ActividadFactory.produceActiviad();
                     actividad.setId(resultSet.getInt("Id"));
                     actividad.setFecha(resultSet.getDate("Fecha"));
                     actividad.setLabor((Labor) new LaborDAO().find(resultSet.getInt("Id_Labor")));
                     actividad.setEmpleado((Empleado) new EmpleadoDAO().find(resultSet.getInt("Id_Empleado")));
+                    actividad.setStatus(resultSet.getBoolean("Status"));
                     actividad.setInactive_date(resultSet.getDate("Inactive_Date"));
                 }
             }
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "MostrarData Error: {0}", e);
         }
-        System.out.println("ACTIVIDAD ENCONTRADA: " + actividad);
         return actividad;
     }
 

@@ -17,6 +17,7 @@ and open the template in the editor.
     border: none !important;
     display:inline-block !important;
     box-shadow: none;
+    margin-top: -5.8%;
 }
 .ui-row-editor{
     display: inline-block;

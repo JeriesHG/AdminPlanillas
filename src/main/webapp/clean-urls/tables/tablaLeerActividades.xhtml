@@ -10,27 +10,69 @@
     <ui:composition>
 
         <h:panelGroup id="tablaActidadesWrapper"  layout="block">
-            <p:dataTable value="#{actividadesBean.listaActividades}" var = "actividad" rows="10" editable="true" editMode="cell"
-                             paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                             rowsPerPageTemplate="5,10,15">
+            <p:dataTable value="#{actividadesBean.listaActividades}" var = "actividad" rows="10" editable="true"
+                         paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15">
 
-                    <p:column headerText="ID">
-                        <h:outputText value="#{actividad.id}"/>
-                    </p:column>
+                <p:ajax event="rowEdit" listener="#{actividadesBean.onRowEdit}" update=":actividadesForm:messages "/>
+                <p:ajax event="rowEditCancel" listener="#{actividadesBean.onRowCancel}" update=":actividadesForm:messages" />
+
+                <p:column headerText="ID">
+                    <h:outputText value="#{actividad.id}"/>
+                </p:column>
                 <p:column headerText="Fecha" >
-                    <h:outputText value="#{actividad.fecha}"/>
-                    </p:column>
-                    <p:column headerText="Empleado" >
-                        <h:outputText value="#{actividad.empleado.nombre}"/>
-                    </p:column>
-                    <p:column headerText="Labor" >
-                        <h:outputText value="#{actividad.labor.nombre}"/>
-                    </p:column>
-                    <p:column headerText="Estado" >
-                        <h:outputText value="#{actividad.status}"/>
-                    </p:column>
-                </p:dataTable>
-            </h:panelGroup>
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{actividad.fecha}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:calendar navigator="true" value="#{actividad.fecha}" required="true" id="fechaActividad"
+                                        requiredMessage="Por favor ingrese dia de inicio"  style="width: 95%"
+                                        yearRange="c-50:c+50"  pattern="yyyy/MM/dd" ></p:calendar>
+                        </f:facet>
+                    </p:cellEditor>
+
+                </p:column>
+                <p:column headerText="Empleado" >
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{actividad.empleado.nombre}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <h:inputText style="width: 95%" value="#{actividad.empleado.nombre}"/>
+                        </f:facet>
+                    </p:cellEditor>
+
+                </p:column>
+                <p:column headerText="Labor" >
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{actividad.labor.nombre}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <h:inputText style="width: 95%" value="#{actividad.labor.nombre}"/>
+                        </f:facet>
+                    </p:cellEditor>
+
+                </p:column>
+                <p:column headerText="Estado" >
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{actividad.status}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <h:outputText value="#{actividad.status}"/>
+                        </f:facet>
+                    </p:cellEditor>
+
+                </p:column>
+
+                <p:column style="width:100px">
+                    <p:rowEditor />
+                    <p:commandButton icon="ui-icon-trash" action="#{actividadesBean.eliminarData(actividad)}" class="blankButton"/>
+                </p:column>
+            </p:dataTable>
+        </h:panelGroup>
     </ui:composition>
 
 </f:view>
