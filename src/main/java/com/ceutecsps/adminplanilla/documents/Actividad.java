@@ -6,17 +6,19 @@
 package com.ceutecsps.adminplanilla.documents;
 
 import java.util.Date;
+import org.apache.commons.lang.StringUtils;
 
 /**
  *
  * @author Jeries
  */
-public class Actividad extends AbstractDoc{
+public class Actividad extends AbstractDoc {
 
     private Date fecha;
     private boolean status;
     private Empleado empleado;
     private Labor labor;
+    private String trabajoRealizado;
 
     public Actividad() {
 
@@ -53,6 +55,23 @@ public class Actividad extends AbstractDoc{
     public void setLabor(Labor labor) {
         this.labor = labor;
     }
-    
-    
+
+    public String getTrabajoRealizado() {
+        return trabajoRealizado;
+    }
+
+    public void setTrabajoRealizado(String trabajoRealizado) {
+        this.trabajoRealizado = trabajoRealizado;
+    }
+
+    public String getTotal() {
+        if (!StringUtils.isBlank(trabajoRealizado)) {
+            float workDone = Float.parseFloat(trabajoRealizado);
+            float laborWorth = this.labor.getPrecio();
+            return String.valueOf((workDone * laborWorth));
+        } else {
+            return "";
+        }
+    }
+
 }

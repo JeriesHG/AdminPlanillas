@@ -47,6 +47,7 @@ public class ActividadDAO implements IDAO {
                     actividad.setLabor((Labor) new LaborDAO().find(resultSet.getInt("Id_Labor")));
                     actividad.setEmpleado((Empleado) new EmpleadoDAO().find(resultSet.getInt("Id_Empleado")));
                     actividad.setInactive_date(resultSet.getDate("Inactive_Date"));
+                    actividad.setTrabajoRealizado(resultSet.getString("Trabajo_Realizado"));
                     actividad.setStatus(resultSet.getBoolean("Status"));
                     listaActividad.add(actividad);
                 }
@@ -61,7 +62,7 @@ public class ActividadDAO implements IDAO {
     public boolean insert(Object object) {
         int result = 0;
         Actividad actividad = (Actividad) object;
-        String query = "INSERT INTO adminPlanillas.actividades (Fecha,Status,Id_Labor,Id_Empleado) values (?,?,?,?)";
+        String query = "INSERT INTO adminPlanillas.actividades (Fecha,Status,Id_Labor,Id_Empleado,Trabajo_Realizado) values (?,?,?,?,?)";
         LOGGER.log(Level.INFO, "Insertando Actividad con ID: {0}", actividad.getId());
         try (Connection connection = ConnectionManager.produceConnection();
                 PreparedStatement pstmt = connection.prepareStatement(query);) {
@@ -69,6 +70,7 @@ public class ActividadDAO implements IDAO {
             pstmt.setBoolean(2, actividad.isStatus());
             pstmt.setInt(3, actividad.getLabor().getId());
             pstmt.setInt(4, actividad.getEmpleado().getId());
+            pstmt.setString(5, actividad.getTrabajoRealizado());
             result = pstmt.executeUpdate();
             LOGGER.log(Level.INFO, "Resultado Agregar Data - Result: {0}", result);
         } catch (Exception e) {
@@ -98,7 +100,7 @@ public class ActividadDAO implements IDAO {
     public boolean update(Object object) {
         int result = 0;
         Actividad actividad = (Actividad) object;
-        String query = "UPDATE adminPlanillas.actividades SET Fecha = ?, Status = ? ,Id_Labor = ?, Id_Empleado = ? WHERE Id = " + actividad.getId();
+        String query = "UPDATE adminPlanillas.actividades SET Fecha = ?, Status = ? ,Id_Labor = ?, Id_Empleado = ?, Trabajo_Realizado = ? WHERE Id = " + actividad.getId();
         LOGGER.log(Level.INFO, "Actualizando Actividad con ID: {0}", actividad.getId());
         try (Connection connection = ConnectionManager.produceConnection();
                 PreparedStatement pstmt = connection.prepareStatement(query);) {
@@ -106,6 +108,7 @@ public class ActividadDAO implements IDAO {
             pstmt.setBoolean(2, actividad.isStatus());
             pstmt.setInt(3, actividad.getLabor().getId());
             pstmt.setInt(4, actividad.getEmpleado().getId());
+            pstmt.setString(5, actividad.getTrabajoRealizado());
             result = pstmt.executeUpdate();
             LOGGER.log(Level.INFO, "Resultado Agregar Data - Result: {0}", result);
         } catch (Exception e) {
@@ -116,16 +119,37 @@ public class ActividadDAO implements IDAO {
 
     @Override
     public Object find(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String query = "SELECT * FROM adminPlanillas.actividades WHERE Id = "+id;
+        LOGGER.log(Level.INFO, "Buscando actividad con ID: {0}", id);
+        try (Connection connection = ConnectionManager.produceConnection();
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(query)) {
+            while (resultSet.next()) {
+                if (resultSet.getDate("Inactive_Date") == null) {
+                    Actividad actividad = ActividadFactory.produceActiviad();
+                    actividad.setId(resultSet.getInt("Id"));
+                    actividad.setFecha(resultSet.getDate("Fecha"));
+                    actividad.setLabor((Labor) new LaborDAO().find(resultSet.getInt("Id_Labor")));
+                    actividad.setEmpleado((Empleado) new EmpleadoDAO().find(resultSet.getInt("Id_Empleado")));
+                    actividad.setTrabajoRealizado(resultSet.getString("Trabajo_Realizado"));
+                    actividad.setInactive_date(resultSet.getDate("Inactive_Date"));
+                    actividad.setStatus(resultSet.getBoolean("Status"));
+                    return actividad;
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "MostrarData Error: {0}", e);
+        }
+        return ActividadFactory.produceActiviad();
     }
 
     public Object findActividadExistente(int id, Date date) {
         String query = "SELECT * FROM adminPlanillas.actividades"
                 + " WHERE Id_Empleado = " + id
-                + " AND Fecha = '" + new java.sql.Date(date.getTime())+"';";
-        
+                + " AND Fecha = '" + new java.sql.Date(date.getTime()) + "';";
+
         Actividad actividad = null;
-        LOGGER.log(Level.INFO, "Buscando actividad: {0}",id);
+        LOGGER.log(Level.INFO, "Buscando actividad: {0}", id);
         try (Connection connection = ConnectionManager.produceConnection();
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(query)) {
@@ -136,6 +160,7 @@ public class ActividadDAO implements IDAO {
                     actividad.setFecha(resultSet.getDate("Fecha"));
                     actividad.setLabor((Labor) new LaborDAO().find(resultSet.getInt("Id_Labor")));
                     actividad.setEmpleado((Empleado) new EmpleadoDAO().find(resultSet.getInt("Id_Empleado")));
+                    actividad.setTrabajoRealizado(resultSet.getString("Trabajo_Realizado"));
                     actividad.setStatus(resultSet.getBoolean("Status"));
                     actividad.setInactive_date(resultSet.getDate("Inactive_Date"));
                 }
@@ -144,6 +169,38 @@ public class ActividadDAO implements IDAO {
             LOGGER.log(Level.SEVERE, "MostrarData Error: {0}", e);
         }
         return actividad;
+    }
+
+    public List findActividadExistente(Date from, Date to) {
+        java.sql.Date formattedFrom = new java.sql.Date(from.getTime());
+        java.sql.Date formattedTo = new java.sql.Date(to.getTime());
+        String query = "SELECT * FROM adminPlanillas.actividades"
+                + " WHERE Fecha"
+                + " BETWEEN '" + formattedFrom + "' AND '" + formattedTo + "';";
+
+        List<Object> listaActividades = new ArrayList();
+        LOGGER.log(Level.INFO, "Buscando actividades con fechas desde :{0} al {1}", new Object[]{formattedFrom, formattedTo});
+        try (Connection connection = ConnectionManager.produceConnection();
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(query)) {
+            while (resultSet.next()) {
+                System.out.println(resultSet.getDate("Inactive_Date") == null);
+                if (resultSet.getDate("Inactive_Date") == null) {
+                    Actividad actividad = ActividadFactory.produceActiviad();
+                    actividad.setId(resultSet.getInt("Id"));
+                    actividad.setFecha(resultSet.getDate("Fecha"));
+                    actividad.setLabor((Labor) new LaborDAO().find(resultSet.getInt("Id_Labor")));
+                    actividad.setEmpleado((Empleado) new EmpleadoDAO().find(resultSet.getInt("Id_Empleado")));
+                    actividad.setStatus(resultSet.getBoolean("Status"));
+                    actividad.setTrabajoRealizado(resultSet.getString("Trabajo_Realizado"));
+                    actividad.setInactive_date(resultSet.getDate("Inactive_Date"));
+                    listaActividades.add(actividad);
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "MostrarData Error: {0}", e);
+        }
+        return listaActividades;
     }
 
 }

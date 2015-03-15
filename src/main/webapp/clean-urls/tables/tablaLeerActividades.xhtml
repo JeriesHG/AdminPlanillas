@@ -68,8 +68,10 @@
                 </p:column>
 
                 <p:column style="width:100px">
-                    <p:rowEditor />
-                    <p:commandButton icon="ui-icon-trash" action="#{actividadesBean.eliminarData(actividad)}" class="blankButton"/>
+                    <h:panelGroup rendered="#{not actividad.status}">
+                        <p:rowEditor />
+                        <p:commandButton icon="ui-icon-trash" action="#{actividadesBean.eliminarData(actividad)}" class="blankButton"/>
+                    </h:panelGroup>
                 </p:column>
             </p:dataTable>
         </h:panelGroup>

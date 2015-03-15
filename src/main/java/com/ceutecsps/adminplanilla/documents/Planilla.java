@@ -29,7 +29,7 @@ public class Planilla extends AbstractDoc{
     }
 
     public void setFecha_inicio(Date fecha_inicio) {
-        this.fecha_inicio = fecha_inicio;
+        this.fecha_inicio = new java.sql.Date(fecha_inicio.getTime());
     }
 
     public Date getFecha_fin() {
@@ -37,7 +37,7 @@ public class Planilla extends AbstractDoc{
     }
 
     public void setFecha_fin(Date fecha_fin) {
-        this.fecha_fin = fecha_fin;
+        this.fecha_fin = new java.sql.Date(fecha_fin.getTime());
     }
 
     public boolean isCreada() {
@@ -64,6 +64,12 @@ public class Planilla extends AbstractDoc{
         this.listaDeducciones = listaDeducciones;
     }
     
-    
+    public float getTotal(){
+        float total = 0;
+        for(Actividad act : listaActividades){
+            total += Float.parseFloat(act.getTotal());
+        }
+        return total;
+    }
 
 }
