@@ -44,3 +44,9 @@ and open the template in the editor.
 .guardarTodoWrapper input[type='submit']:hover,.btn-save:hover{
     opacity: 0.85;
 }
+.ui-dialog{
+	z-index: 100000 !important;
+}
+.ui-dialog-content{
+	height: auto !important;
+}

@@ -10,10 +10,10 @@
     <ui:composition>
 
         <!--<h:form id="tablaActividades" >-->
-        <h:panelGroup id="tablaActidadesWrapper" class="tablaActividadesWrapper" layout="block">
+        <h:panelGroup id="tablaActidadesWrapper" styleClass="tablaActividadesWrapper" layout="block">
             <h:panelGroup rendered="#{planillasBean.renderizarTablaActividad}">
                 <div class="guardarTodoWrapper">
-                    <p:commandButton class='btn-save' value="Guardar Planilla" action="#{planillasBean.salvarPlanilla}" ajax="false" validateClient="true" type="submit">
+                    <p:commandButton styleClass='btn-save' value="Guardar Planilla" action="#{planillasBean.salvarPlanilla}" ajax="false" validateClient="true" type="submit">
 
                     </p:commandButton>
                 </div>
@@ -63,7 +63,7 @@
 
                     </p:column>
                     <p:column headerText="Trabajo Realizado" >
-                        <p:inputMask required="true" value="#{actividad.trabajoRealizado}" class="input-sm form-control"
+                        <p:inputMask required="true" value="#{actividad.trabajoRealizado}" styleClass="input-sm form-control"
                             mask="9?9999999"  requiredMessage="Por favor ingresar trabajo realizado para #{actividad.empleado.nombre} con ID #{actividad.id}"
                             maxlength="8" placeHolder=" "/>
                     </p:column>

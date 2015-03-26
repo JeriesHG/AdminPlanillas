@@ -17,10 +17,10 @@
                 <p:ajax event="rowEdit" listener="#{actividadesBean.onRowEdit}" update=":actividadesForm:messages "/>
                 <p:ajax event="rowEditCancel" listener="#{actividadesBean.onRowCancel}" update=":actividadesForm:messages" />
 
-                <p:column headerText="ID">
+                <p:column headerText="ID" sortBy="#{actividad.id}">
                     <h:outputText value="#{actividad.id}"/>
                 </p:column>
-                <p:column headerText="Fecha" >
+                <p:column headerText="Fecha" sortBy="#{actividad.fecha}">
                     <p:cellEditor>
                         <f:facet name="output">
                             <h:outputText value="#{actividad.fecha}"/>
@@ -33,7 +33,7 @@
                     </p:cellEditor>
 
                 </p:column>
-                <p:column headerText="Empleado" >
+                <p:column headerText="Empleado" sortBy="#{actividad.empleado.nombre}">
                     <p:cellEditor>
                         <f:facet name="output">
                             <h:outputText value="#{actividad.empleado.nombre}"/>
@@ -44,7 +44,7 @@
                     </p:cellEditor>
 
                 </p:column>
-                <p:column headerText="Labor" >
+                <p:column headerText="Labor" sortBy="#{actividad.labor.nombre}">
                     <p:cellEditor>
                         <f:facet name="output">
                             <h:outputText value="#{actividad.labor.nombre}"/>
@@ -55,22 +55,10 @@
                     </p:cellEditor>
 
                 </p:column>
-                <p:column headerText="Estado" >
-                    <p:cellEditor>
-                        <f:facet name="output">
-                            <h:outputText value="#{actividad.status}"/>
-                        </f:facet>
-                        <f:facet name="input">
-                            <h:outputText value="#{actividad.status}"/>
-                        </f:facet>
-                    </p:cellEditor>
-
-                </p:column>
-
                 <p:column style="width:100px">
                     <h:panelGroup rendered="#{not actividad.status}">
                         <p:rowEditor />
-                        <p:commandButton icon="ui-icon-trash" action="#{actividadesBean.eliminarData(actividad)}" class="blankButton"/>
+                        <p:commandButton icon="ui-icon-trash" action="#{actividadesBean.eliminarData(actividad)}" styleClass="blankButton"/>
                     </h:panelGroup>
                 </p:column>
             </p:dataTable>

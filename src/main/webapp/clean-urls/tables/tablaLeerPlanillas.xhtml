@@ -48,7 +48,7 @@
                 </p:column>
                 <p:column >
                     <p:commandButton value="Ver actividades..." type="button" onclick="PF('dlg3').show();" /> 
-                    <p:dialog header="Actividades" widgetVar="dlg3" showEffect="scale" hideEffect="scale" height="100" modal="true">
+                    <p:dialog header="Actividades" widgetVar="dlg3" showEffect="scale" hideEffect="scale" height="100" modal="true" styleClass="dialogWrapper">
                         <p:dataTable value="#{planilla.listaActividades}" var = "actividad" rows="10">
                             <p:column headerText="ID">
                                 <h:outputText value="#{actividad.id}"/>
@@ -69,7 +69,7 @@
                     </p:dialog>
                 </p:column>
                 <p:column>
-                    <p:commandButton icon="ui-icon-trash" action="#{planillasBean.eliminarData(planilla)}" class="blankButton"/>
+                    <p:commandButton icon="ui-icon-trash" action="#{planillasBean.eliminarData(planilla)}" styleClass="blankButton"/>
                 </p:column>
             </p:dataTable>
         </h:panelGroup>
