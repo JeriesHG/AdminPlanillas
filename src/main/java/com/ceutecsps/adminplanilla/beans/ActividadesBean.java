@@ -12,6 +12,7 @@ import com.ceutecsps.adminplanilla.documents.Empleado;
 import com.ceutecsps.adminplanilla.documents.Labor;
 import com.ceutecsps.adminplanilla.factories.ActividadFactory;
 import com.ceutecsps.adminplanilla.utilities.UtilityClass;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -56,26 +57,37 @@ public class ActividadesBean implements Serializable {
         listaActividades = actDAO.readAll();
     }
 
-    public void generarNuevaActividad() {
-        try {
-            mapShowSelectedLabor = new HashMap();
-            if (Days.daysBetween(new DateTime(fromDate), new DateTime(toDate)).getDays() == 4) {
-                generarListaFechas(fromDate, toDate);
-                renderizarTablaActividad = true;
-            } else {
-                renderizarTablaActividad = false;
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Por favor escoger 1 semana solamente (5 dias)"));
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(ActividadesBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+   public void generarNuevaActividad() {
+		try {
+			mapShowSelectedLabor = new HashMap();
+			listaActividades = new ArrayList();
+			if (Days.daysBetween(new DateTime(fromDate), new DateTime(toDate)).getDays() == 4) {
+				generarListaFechas(fromDate, toDate);
+				renderizarTablaActividad = true;
+			} else {
+				renderizarTablaActividad = false;
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Por favor escoger 1 semana solamente (5 dias)"));
+			}
+		} catch (Exception ex) {
+			Logger.getLogger(ActividadesBean.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
 
-    public String salvarTodo() {
-        listaActividades.stream().forEach((act) -> {
-            actDAO.insert(act);
-        });
-        return "actividades?faces-redirect=true";
+    public void salvarTodo() {
+		try {
+			if (listaActividades.isEmpty()) {
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Por favor agregue labores a los empleados"));
+				return;
+			}
+			listaActividades.stream().forEach((act) -> {
+				actDAO.insert(act);
+			});
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Actividades Guardadas Exitosamente!", ""));
+			FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+			FacesContext.getCurrentInstance().getExternalContext().redirect("actividades.xhtml");
+		} catch (IOException ex) {
+			Logger.getLogger(ActividadesBean.class.getName()).log(Level.SEVERE, null, ex);
+		}
     }
 
     public void onCellEdit(CellEditEvent event) {
@@ -93,7 +105,7 @@ public class ActividadesBean implements Serializable {
                 actDAO.findActividadExistente(empleado.getId(), this.formatoEstandar.parse(event.getColumn().getHeaderText()));
                 listaActividades.add(actividad);
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", empleado.getNombre() + " ya tiene una actividad asignada para ese dia."));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", empleado.getNombre() + " ya tiene una actividad asignada para la fecha "+event.getColumn().getHeaderText()+"."));
             }
 
         } catch (ParseException ex) {
