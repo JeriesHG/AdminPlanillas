@@ -12,7 +12,7 @@ package com.ceutecsps.adminplanilla.documents;
 public class Deduccion extends AbstractDoc{
 
     private String descripcion;
-    private float porcentajeDeducir;
+    private Float porcentajeDeducir;
 
     public Deduccion() {
 
@@ -26,11 +26,11 @@ public class Deduccion extends AbstractDoc{
         this.descripcion = descripcion;
     }
 
-    public float getPorcentajeDeducir() {
+    public Float getPorcentajeDeducir() {
         return porcentajeDeducir;
     }
 
-    public void setPorcentajeDeducir(float porcentajeDeducir) {
+    public void setPorcentajeDeducir(Float porcentajeDeducir) {
         this.porcentajeDeducir = porcentajeDeducir;
     }
 }

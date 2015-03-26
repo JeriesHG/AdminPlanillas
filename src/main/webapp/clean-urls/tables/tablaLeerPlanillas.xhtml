@@ -68,6 +68,22 @@
                         </p:dataTable>
                     </p:dialog>
                 </p:column>
+			<p:column >
+                    <p:commandButton value="Ver deducciones..." type="button" onclick="PF('dlg4').show();" /> 
+                    <p:dialog header="Deducciones" widgetVar="dlg4" showEffect="scale" hideEffect="scale" height="100" modal="true" styleClass="dialogWrapper">
+                        <p:dataTable value="#{planilla.listaDeducciones}" var = "deduccion" rows="10">
+                            <p:column headerText="ID">
+                                <h:outputText value="#{deduccion.id}"/>
+                            </p:column>
+                            <p:column headerText="Descripcion" >
+                                <h:outputText value="#{deduccion.descripcion}"/>
+                            </p:column>
+                            <p:column headerText="Porcentaje" >
+                                <h:outputText value="#{deduccion.porcentajeDeducir}%"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:dialog>
+                </p:column>
                 <p:column>
                     <p:commandButton icon="ui-icon-trash" action="#{planillasBean.eliminarData(planilla)}" styleClass="blankButton"/>
                 </p:column>

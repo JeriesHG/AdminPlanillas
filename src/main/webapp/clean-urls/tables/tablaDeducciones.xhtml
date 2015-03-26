@@ -1,0 +1,51 @@
+<f:view 
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:o="http://omnifaces.org/ui"
+        xmlns:c="http://java.sun.com/jsp/jstl/core"
+        xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition >
+
+        <h:form id="tablaDeduccionForm">
+            <p:growl id="msgs" showDetail="true"/>
+            <p:dataTable value="#{deduccionBean.listaDeduccion}" var = "deduccion" rows="10" editable="true"
+                         paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15">
+
+                <p:ajax event="rowEdit" listener="#{deduccionBean.onRowEdit}" update=":tablaDeduccionForm:msgs" />
+                <p:ajax event="rowEditCancel" listener="#{deduccionBean.onRowCancel}" update=":tablaDeduccionForm:msgs" />
+
+                <p:column headerText="ID">
+                    <h:outputText value="#{deduccion.id}"/>
+                </p:column>
+                <p:column headerText="Descripcion">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{deduccion.descripcion}"/></f:facet>
+                        <f:facet name="input">
+                            <p:inputText id = "descripcionDeduccionTabla"  required="true" requiredMessage="Por favor ingrese una descripcion"
+                                          value="#{deduccion.descripcion}"></p:inputText>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+				<p:column headerText="Porcentaje">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{deduccion.porcentajeDeducir}%"/></f:facet>
+                        <f:facet name="input">
+                            <p:inputText id = "porcentajeDeduccionTabla"  required="true" requiredMessage="Por favor ingrese un porcentaje"
+										 value="#{deduccion.porcentajeDeducir}"></p:inputText>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                
+                <p:column >
+                    <p:rowEditor />
+                    <p:commandButton icon = "ui-icon-trash" styleClass="blankButton" action="#{deduccionBean.eliminarData(deduccion)}"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:composition>
+
+</f:view>

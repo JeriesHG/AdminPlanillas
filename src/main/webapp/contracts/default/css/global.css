@@ -50,3 +50,12 @@ and open the template in the editor.
 .ui-dialog-content{
 	height: auto !important;
 }
+.planillasDT{
+	width: 85%;
+	display:inline-block;
+}
+#deduccionesWrapper{
+	float: right;
+	display:inline-block;
+	max-height:350px;
+}

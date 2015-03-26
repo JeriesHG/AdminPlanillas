@@ -20,16 +20,16 @@ public class ConnectionManager {
 
     private final String dbUrl = "jdbc:mysql://localhost:3306/";
     private final String dbUser = "root";
-    private final String dbPass = "123";
+    private final String dbPass = "";
     private static final Logger LOGGER = Logger.getLogger(ConnectionManager.class.getName());
 
     private static final Supplier<ConnectionManager> connectionSupplier = ConnectionManager::new;
 
     public Connection getConnection() {
         try {
-            Class.forName("org.mariadb.jdbc.Driver");
+//            Class.forName("org.mariadb.jdbc.Driver");
             return DriverManager.getConnection(dbUrl, dbUser, dbPass);
-        } catch (SQLException | ClassNotFoundException ex) {
+        } catch (SQLException  ex) {
             LOGGER.log(Level.SEVERE, "Get Connection", ex);
         }
         return null;

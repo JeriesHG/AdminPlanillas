@@ -69,6 +69,9 @@ public class Planilla extends AbstractDoc{
         for(Actividad act : listaActividades){
             total += Float.parseFloat(act.getTotal());
         }
+		for(Deduccion deduccion : listaDeducciones){
+			total -= total/deduccion.getPorcentajeDeducir();
+		}
         return total;
     }
 

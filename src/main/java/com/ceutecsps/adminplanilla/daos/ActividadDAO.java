@@ -13,6 +13,7 @@ import com.ceutecsps.adminplanilla.factories.ActividadFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -102,16 +103,23 @@ public class ActividadDAO implements IDAO {
         Actividad actividad = (Actividad) object;
         String query = "UPDATE adminPlanillas.actividades SET Fecha = ?, Status = ? ,Id_Labor = ?, Id_Empleado = ?, Trabajo_Realizado = ? WHERE Id = " + actividad.getId();
         LOGGER.log(Level.INFO, "Actualizando Actividad con ID: {0}", actividad.getId());
-        try (Connection connection = ConnectionManager.produceConnection();
-                PreparedStatement pstmt = connection.prepareStatement(query);) {
+		Connection connection = ConnectionManager.produceConnection();
+        try (PreparedStatement pstmt = connection.prepareStatement(query);) {
+			connection.setAutoCommit(false);
             pstmt.setDate(1, new java.sql.Date(actividad.getFecha().getTime()));
             pstmt.setBoolean(2, actividad.isStatus());
             pstmt.setInt(3, actividad.getLabor().getId());
             pstmt.setInt(4, actividad.getEmpleado().getId());
             pstmt.setString(5, actividad.getTrabajoRealizado());
             result = pstmt.executeUpdate();
+		 connection.commit();
             LOGGER.log(Level.INFO, "Resultado Agregar Data - Result: {0}", result);
         } catch (Exception e) {
+			try {
+				connection.rollback();
+			} catch (SQLException ex) {
+				  LOGGER.log(Level.SEVERE, null, ex);
+			}
             LOGGER.log(Level.SEVERE, "insertarData Error: {0}", e);
         }
         return result > 0;

@@ -7,6 +7,7 @@ package com.ceutecsps.adminplanilla.daos;
 
 import com.ceutecsps.adminplanilla.connections.ConnectionManager;
 import com.ceutecsps.adminplanilla.documents.Actividad;
+import com.ceutecsps.adminplanilla.documents.Deduccion;
 import com.ceutecsps.adminplanilla.documents.Planilla;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -36,11 +37,13 @@ public class PlanillaDAO implements IDAO {
         try (Connection connection = ConnectionManager.produceConnection();
                 Statement statement = connection.createStatement();
                 Statement statement2 = connection.createStatement();
+		     Statement statement3 = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(query)) {
             while (resultSet.next()) {
                 if (resultSet.getDate("Inactive_Date") == null) {
                     Planilla planilla = new Planilla();
                     List<Actividad> listaActividades = new ArrayList();
+		        List<Deduccion> listaDeducciones = new ArrayList();
                     planilla.setId(resultSet.getInt("Id"));
                     planilla.setFecha_inicio(resultSet.getDate("Fecha_Inicio"));
                     planilla.setFecha_fin(resultSet.getDate("Fecha_Fin"));
@@ -51,6 +54,12 @@ public class PlanillaDAO implements IDAO {
                             listaActividades.add((Actividad) new ActividadDAO().find(rs.getInt("Id_Actividad")));
                         }
                     }
+		       try (ResultSet rs = statement2.executeQuery("Select * FROM adminPlanillas.deducciones_x_planilla WHERE Id_Planilla = " + planilla.getId())) {
+                        while (rs.next()) {
+                            listaDeducciones.add(new DeduccionDAO().find(rs.getInt("Id_Deduccion")));
+                        }
+                    }
+			   planilla.setListaDeducciones(listaDeducciones);
                     planilla.setListaActividades(listaActividades);
                     listaPlanillas.add(planilla);
                 }
@@ -68,10 +77,12 @@ public class PlanillaDAO implements IDAO {
         String query = "INSERT INTO adminPlanillas.planillas (Fecha_Inicio,Fecha_Fin,Planilla_Creada,Id_Deduccion) values (?,?,?,?)";
         
         String query2 = "INSERT INTO adminPlanillas.actividades_x_planilla (Id_Actividad,Id_Planilla) values (?,?)";
-        LOGGER.log(Level.INFO, "Insertando Planilla con ID: {0}", planilla.getId());
+		String query3 = "INSERT INTO adminPlanillas.deducciones_x_planilla (Id_Deduccion,Id_Planilla) values (?,?)";
+		LOGGER.log(Level.INFO, "Insertando Planilla con ID: {0}", planilla.getId());
         Connection connection = ConnectionManager.produceConnection();
         try (PreparedStatement pstmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-                PreparedStatement pstmt2 = connection.prepareStatement(query2);) {
+                PreparedStatement pstmt2 = connection.prepareStatement(query2);
+				PreparedStatement pstmt3 = connection.prepareStatement(query3);) {
             
             connection.setAutoCommit(false);
             
@@ -92,8 +103,15 @@ public class PlanillaDAO implements IDAO {
                 pstmt2.setInt(2, planilla.getId());
                 pstmt2.addBatch();
             }
-            int updates[] = pstmt2.executeBatch();
-            System.out.println("Se actualizaron: " + Arrays.toString(updates));
+			for(Deduccion ded : planilla.getListaDeducciones()){
+				pstmt3.setInt(1, ded.getId());
+				pstmt3.setInt(2, planilla.getId());
+				pstmt3.addBatch();
+			}
+            int updates2[] = pstmt2.executeBatch();
+	      int updates3[] = pstmt3.executeBatch();
+            System.out.println("Se actualizaron: " + Arrays.toString(updates2));
+		System.out.println("Se actualizaron: " + Arrays.toString(updates3));
             connection.commit();
         } catch (Exception e) {
             try {
@@ -121,12 +139,25 @@ public class PlanillaDAO implements IDAO {
         int result = 0;
         LOGGER.log(Level.INFO, "Eliminando empleado {0}", planilla.getId());
         String query = "UPDATE adminPlanillas.planillas SET Inactive_Date = ? WHERE Id = " + planilla.getId();
-        try (Connection connection = ConnectionManager.produceConnection();
-                PreparedStatement pstmt = connection.prepareStatement(query);) {
+		Connection connection = ConnectionManager.produceConnection();
+        try (PreparedStatement pstmt = connection.prepareStatement(query);) {
+		connection.setAutoCommit(false);
             pstmt.setDate(1, new java.sql.Date(new Date().getTime()));
             result = pstmt.executeUpdate();
+		planilla.getListaActividades().stream().map((act) -> {
+			act.setStatus(false);
+			return act;
+		}).forEach((act) -> {
+			new ActividadDAO().update(act);
+		});
+		connection.commit();
             LOGGER.log(Level.INFO, "Resultado Eliminar Data - Row Result: {0}", result);
         } catch (Exception e) {
+			try {
+				connection.rollback();
+			} catch (SQLException ex) {
+				LOGGER.log(Level.SEVERE, null, ex);
+			}
             LOGGER.log(Level.SEVERE, "eliminar Error: {0}", e);
         }
         return result > 0;

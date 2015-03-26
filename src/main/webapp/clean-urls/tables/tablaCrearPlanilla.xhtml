@@ -16,8 +16,9 @@
                     <p:commandButton styleClass='btn-save' value="Guardar Planilla" action="#{planillasBean.salvarPlanilla}" ajax="false" validateClient="true" type="submit">
 
                     </p:commandButton>
+
                 </div>
-                <p:dataTable value="#{planillasBean.listaActividades}" var = "actividad" rows="10" editable="true" editMode="cell"
+                <p:dataTable value="#{planillasBean.listaActividades}" var = "actividad" rows="10" editable="true" editMode="cell" styleClass="planillasDT"
                              paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="5,10,15">
 
@@ -64,13 +65,22 @@
                     </p:column>
                     <p:column headerText="Trabajo Realizado" >
                         <p:inputMask required="true" value="#{actividad.trabajoRealizado}" styleClass="input-sm form-control"
-                            mask="9?9999999"  requiredMessage="Por favor ingresar trabajo realizado para #{actividad.empleado.nombre} con ID #{actividad.id}"
-                            maxlength="8" placeHolder=" "/>
+									 mask="9?9999999"  requiredMessage="Por favor ingresar trabajo realizado para #{actividad.empleado.nombre} con ID #{actividad.id}"
+									 maxlength="8" placeHolder=" "/>
                     </p:column>
-                     <p:column headerText="Total" >
-                         <h:outputText value="#{actividad.total}"/>
+					<p:column headerText="Total" >
+						<h:outputText value="#{actividad.total}"/>
                     </p:column>
                 </p:dataTable>
+				<div id="deduccionesWrapper">
+					<p:outputLabel for="deducciones" value="Deducciones:" />
+					<p:selectManyMenu id="deducciones" converter="omnifaces.SelectItemsConverter" filter="true" filterMatchMode="contains" showCheckbox="true" 
+									  value="#{planillasBean.listaDeducciones}" required="true" requiredMessage="Por favor ingrese algunas deducciones a planilla">
+						<f:selectItems value="#{deduccionBean.listaDeduccion}" var ="deduccion"
+									   itemLabel="#{deduccion.descripcion} - #{deduccion.porcentajeDeducir}%" itemValue="#{deduccion}"/>
+
+					</p:selectManyMenu>
+				</div>
             </h:panelGroup>
         </h:panelGroup>
         <!--</h:form>-->

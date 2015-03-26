@@ -8,10 +8,12 @@ package com.ceutecsps.adminplanilla.beans;
 import com.ceutecsps.adminplanilla.daos.ActividadDAO;
 import com.ceutecsps.adminplanilla.daos.PlanillaDAO;
 import com.ceutecsps.adminplanilla.documents.Actividad;
+import com.ceutecsps.adminplanilla.documents.Deduccion;
 import com.ceutecsps.adminplanilla.documents.Planilla;
 import com.ceutecsps.adminplanilla.factories.PlanillaFactory;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -36,14 +38,16 @@ public class PlanillasBean implements Serializable {
     private boolean renderizarTablaActividad;
     private List<Actividad> listaActividades;
     private List<Planilla> listaPlanillas;
+    private List<Deduccion> listaDeducciones;
     private ActividadDAO actDAO = new ActividadDAO();
     private PlanillaDAO planDAO = new PlanillaDAO();
 
     @PostConstruct
     private void inicializarClase(){
         listaPlanillas = planDAO.readAll();
-    }
-    
+	  listaDeducciones = new ArrayList();
+	}
+
     public void crearPlanilla() {
         if (Days.daysBetween(new DateTime(fromDate), new DateTime(toDate)).getDays() == 4) {
             if (planDAO.findBetweenDates(new java.sql.Date(fromDate.getTime()), new java.sql.Date(toDate.getTime()))) {
@@ -71,6 +75,7 @@ public class PlanillasBean implements Serializable {
         planilla.setFecha_inicio(fromDate);
         planilla.setFecha_fin(toDate);
         planilla.setCreada(true);
+	   planilla.setListaDeducciones(listaDeducciones);
         boolean result = planDAO.insert(planilla);
         if (result) {
             try {
@@ -128,7 +133,16 @@ public class PlanillasBean implements Serializable {
     public void setListaPlanillas(List<Planilla> listaPlanillas) {
         this.listaPlanillas = listaPlanillas;
     }
+
+	public List<Deduccion> getListaDeducciones() {
+		return listaDeducciones;
+	}
+
+	public void setListaDeducciones(List<Deduccion> listaDeducciones) {
+		this.listaDeducciones = listaDeducciones;
+	}
     
+	
     
 
 }
