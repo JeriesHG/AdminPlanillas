@@ -1,0 +1,50 @@
+<f:view 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition >
+        <div id="page-wrapper">
+            <div class="container-fluid">
+
+                <ui:include src="../pageHeader.xhtml">
+                    <ui:param name="header" value="Reportes"/>
+                    <ui:param name="subheader" value=""/>
+                    <ui:param name="pagina" value="Reportes"/>
+                    <ui:param name="icono" value="fa fa-table"/>
+                </ui:include>
+
+                <h:form id="reportesForm">
+                    <p:messages/>
+                    <p:panelGrid columns="2" styleClass="content-panel-grid">
+				<h:outputLabel value="From Date:" for="fromDate"/>
+				<p:calendar navigator="true" value="#{reportBean.fromDate}" required="true" id="fromDate"
+                                    requiredMessage="Por favor ingrese dia de inicio"
+                                    yearRange="c-50:c+50"  pattern="yyyy-MM-dd" ></p:calendar>
+
+                        <h:outputLabel value="To Date:" for="toDate"/>
+                        <p:calendar navigator="true" value="#{reportBean.toDate}" required="true" id="toDate"
+                                    requiredMessage="Por favor ingrese dia fin"
+                                    yearRange="c-50:c+50"  pattern="yyyy-MM-dd" ></p:calendar>
+						
+						<h:outputLabel value="Tipo Reporte" for="tipoReporte"/>
+						<p:selectOneMenu value="#{reportBean.reportType}" required="true" id="tipoReporte" requiredMessage="Por favor escoga un reporte">
+							<f:selectItem itemLabel="Seleccionar Reporte"/>
+							<f:selectItem itemLabel="Labores Por Semana" itemValue="LaboresXSemana"/>
+						</p:selectOneMenu>
+						
+						<h:commandLink styleClass="reportBtn"  action="#{reportBean.generarReporte}" value="Genera Reporte"  target="_blank"/> 
+
+                    </p:panelGrid>
+                </h:form>
+                <br/>
+
+            </div>
+        </div>
+    </ui:composition>
+
+</f:view>
