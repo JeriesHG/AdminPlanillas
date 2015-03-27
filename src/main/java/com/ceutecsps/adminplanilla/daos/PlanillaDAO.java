@@ -54,7 +54,7 @@ public class PlanillaDAO implements IDAO {
                             listaActividades.add((Actividad) new ActividadDAO().find(rs.getInt("Id_Actividad")));
                         }
                     }
-		       try (ResultSet rs = statement2.executeQuery("Select * FROM adminPlanillas.deducciones_x_planilla WHERE Id_Planilla = " + planilla.getId())) {
+		       try (ResultSet rs = statement3.executeQuery("Select * FROM adminPlanillas.deducciones_x_planilla WHERE Id_Planilla = " + planilla.getId())) {
                         while (rs.next()) {
                             listaDeducciones.add(new DeduccionDAO().find(rs.getInt("Id_Deduccion")));
                         }
@@ -74,7 +74,7 @@ public class PlanillaDAO implements IDAO {
     public boolean insert(Object object) {
         Planilla planilla = (Planilla) object;
         int result = 0;
-        String query = "INSERT INTO adminPlanillas.planillas (Fecha_Inicio,Fecha_Fin,Planilla_Creada,Id_Deduccion) values (?,?,?,?)";
+        String query = "INSERT INTO adminPlanillas.planillas (Fecha_Inicio,Fecha_Fin,Planilla_Creada) values (?,?,?)";
         
         String query2 = "INSERT INTO adminPlanillas.actividades_x_planilla (Id_Actividad,Id_Planilla) values (?,?)";
 		String query3 = "INSERT INTO adminPlanillas.deducciones_x_planilla (Id_Deduccion,Id_Planilla) values (?,?)";
@@ -89,8 +89,6 @@ public class PlanillaDAO implements IDAO {
             pstmt.setDate(1, new java.sql.Date(planilla.getFecha_inicio().getTime()));
             pstmt.setDate(2, new java.sql.Date(planilla.getFecha_fin().getTime()));
             pstmt.setBoolean(3, planilla.isCreada());
-            //temporal
-            pstmt.setInt(4, 1);
             result = pstmt.executeUpdate();
             try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
@@ -146,6 +144,7 @@ public class PlanillaDAO implements IDAO {
             result = pstmt.executeUpdate();
 		planilla.getListaActividades().stream().map((act) -> {
 			act.setStatus(false);
+                        act.setTrabajoRealizado("");
 			return act;
 		}).forEach((act) -> {
 			new ActividadDAO().update(act);
