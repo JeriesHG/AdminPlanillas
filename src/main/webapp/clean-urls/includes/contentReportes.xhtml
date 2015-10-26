@@ -37,7 +37,8 @@
 							<f:selectItem itemLabel="Labores Por Semana" itemValue="LaboresXSemana"/>
 						</p:selectOneMenu>
 						
-						<h:commandLink styleClass="reportBtn"  action="#{reportBean.generarReporte}" value="Genera Reporte"  target="_blank"/> 
+						<p:commandLink styleClass="reportBtn"  action="#{reportBean.generarReporte}" value="Genera Reporte" ajax="false" 
+                                         validateClient="true" target="_blank"/> 
 
                     </p:panelGrid>
                 </h:form>

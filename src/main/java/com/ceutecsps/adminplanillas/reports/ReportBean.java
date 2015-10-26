@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
@@ -28,7 +29,7 @@ public class ReportBean implements Serializable {
 	private Date toDate;
 	private String reportType;
 	private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
- 
+	
     // Actions ------------------------------------------------------------------------------------
 	public void generarReporte() {
 		Map parameters = new HashMap();
@@ -43,7 +44,7 @@ public class ReportBean implements Serializable {
 			System.out.println("REPORTE CREADO!");
 		}
 	}
-
+	
 	public Date getFromDate() {
 		return fromDate;
 	}
@@ -67,7 +68,7 @@ public class ReportBean implements Serializable {
 	public void setReportType(String reportType) {
 		this.reportType = reportType;
 	}
-	
-	
+
+
 
 }
