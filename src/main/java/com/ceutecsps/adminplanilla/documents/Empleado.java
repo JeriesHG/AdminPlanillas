@@ -11,24 +11,14 @@ import java.util.Date;
  *
  * @author Jeries
  */
-public class Empleado {
+public class Empleado extends AbstractDoc{
 
-    private int id_empleado;
     private String nombre;
     private String apellido;
     private Date fecha_nac;
-    private Date inactive_date;
 
     public Empleado() {
 
-    }
-
-    public int getId_empleado() {
-        return id_empleado;
-    }
-
-    public void setId_empleado(int id_empleado) {
-        this.id_empleado = id_empleado;
     }
 
     public String getNombre() {
@@ -52,15 +42,7 @@ public class Empleado {
     }
 
     public void setFecha_nac(Date fecha_nac) {
-        this.fecha_nac = fecha_nac;
-    }
-
-    public Date getInactive_date() {
-        return inactive_date;
-    }
-
-    public void setInactive_date(Date inactive_date) {
-        this.inactive_date = inactive_date;
+        this.fecha_nac = new java.sql.Date(fecha_nac.getTime());
     }
 
 }

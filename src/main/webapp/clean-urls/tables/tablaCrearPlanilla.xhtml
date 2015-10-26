@@ -1,0 +1,89 @@
+<f:view 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:o="http://omnifaces.org/ui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <!--<h:form id="tablaActividades" >-->
+        <h:panelGroup id="tablaActidadesWrapper" styleClass="tablaActividadesWrapper" layout="block">
+            <h:panelGroup rendered="#{planillasBean.renderizarTablaActividad}">
+                <div class="guardarTodoWrapper">
+                    <p:commandButton styleClass='btn-save' value="Guardar Planilla" action="#{planillasBean.salvarPlanilla}" ajax="false" validateClient="true" type="submit">
+
+                    </p:commandButton>
+
+                </div>
+                <p:dataTable value="#{planillasBean.listaActividades}" var = "actividad" rows="10" editable="true" editMode="cell" styleClass="planillasDT"
+                             paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15">
+
+                    <p:ajax event="rowEdit" listener="#{actividadesBean.onRowEdit}" update=":planillasForm:messages "/>
+                    <p:ajax event="rowEditCancel" listener="#{actividadesBean.onRowCancel}" update=":planillasForm:messages" />
+
+                    <p:column headerText="ID">
+                        <h:outputText value="#{actividad.id}"/>
+                    </p:column>
+                    <p:column headerText="Fecha" >
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{actividad.fecha}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:calendar navigator="true" value="#{actividad.fecha}" required="true" id="fechaActividad"
+                                            requiredMessage="Por favor ingrese dia de inicio"  style="width: 95%"
+                                            yearRange="c-50:c+50"  pattern="yyyy/MM/dd" ></p:calendar>
+                            </f:facet>
+                        </p:cellEditor>
+
+                    </p:column>
+                    <p:column headerText="Empleado" >
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{actividad.empleado.nombre}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <h:inputText style="width: 95%" value="#{actividad.empleado.nombre}"/>
+                            </f:facet>
+                        </p:cellEditor>
+
+                    </p:column>
+                    <p:column headerText="Labor" >
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{actividad.labor.nombre}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <h:inputText style="width: 95%" value="#{actividad.labor.nombre}"/>
+                            </f:facet>
+                        </p:cellEditor>
+
+                    </p:column>
+                    <p:column headerText="Trabajo Realizado" >
+                        <p:inputMask required="true" value="#{actividad.trabajoRealizado}" styleClass="input-sm form-control"
+									 mask="9?9999999"  requiredMessage="Por favor ingresar trabajo realizado para #{actividad.empleado.nombre} con ID #{actividad.id}"
+									 maxlength="8" placeHolder=" "/>
+                    </p:column>
+					<p:column headerText="Total" >
+						<h:outputText value="#{actividad.total}"/>
+                    </p:column>
+                </p:dataTable>
+				<div id="deduccionesWrapper">
+					<p:outputLabel for="deducciones" value="Deducciones:" />
+					<p:selectManyMenu id="deducciones" converter="omnifaces.SelectItemsConverter" filter="true" filterMatchMode="contains" showCheckbox="true" 
+									  value="#{planillasBean.listaDeducciones}" required="true" requiredMessage="Por favor ingrese algunas deducciones a planilla">
+						<f:selectItems value="#{deduccionBean.listaDeduccion}" var ="deduccion"
+									   itemLabel="#{deduccion.descripcion} - #{deduccion.porcentajeDeducir}%" itemValue="#{deduccion}"/>
+
+					</p:selectManyMenu>
+				</div>
+            </h:panelGroup>
+        </h:panelGroup>
+        <!--</h:form>-->
+    </ui:composition>
+
+</f:view>

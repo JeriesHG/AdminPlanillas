@@ -6,29 +6,22 @@
 package com.ceutecsps.adminplanilla.documents;
 
 import java.util.Date;
+import org.apache.commons.lang.StringUtils;
 
 /**
  *
  * @author Jeries
  */
-public class Actividad {
+public class Actividad extends AbstractDoc {
 
-    private int id_actividad;
     private Date fecha;
     private boolean status;
     private Empleado empleado;
-    private Date inactive_date;
+    private Labor labor;
+    private String trabajoRealizado;
 
     public Actividad() {
 
-    }
-
-    public int getId_actividad() {
-        return id_actividad;
-    }
-
-    public void setId_actividad(int id_actividad) {
-        this.id_actividad = id_actividad;
     }
 
     public Date getFecha() {
@@ -36,7 +29,7 @@ public class Actividad {
     }
 
     public void setFecha(Date fecha) {
-        this.fecha = fecha;
+        this.fecha = new java.sql.Date(fecha.getTime());
     }
 
     public boolean isStatus() {
@@ -55,12 +48,30 @@ public class Actividad {
         this.empleado = empleado;
     }
 
-    public Date getInactive_date() {
-        return inactive_date;
+    public Labor getLabor() {
+        return labor;
     }
 
-    public void setInactive_date(Date inactive_date) {
-        this.inactive_date = inactive_date;
+    public void setLabor(Labor labor) {
+        this.labor = labor;
+    }
+
+    public String getTrabajoRealizado() {
+        return trabajoRealizado;
+    }
+
+    public void setTrabajoRealizado(String trabajoRealizado) {
+        this.trabajoRealizado = trabajoRealizado;
+    }
+
+    public String getTotal() {
+        if (!StringUtils.isBlank(trabajoRealizado)) {
+            float workDone = Float.parseFloat(trabajoRealizado);
+            float laborWorth = this.labor.getPrecio();
+            return String.valueOf((workDone * laborWorth));
+        } else {
+            return "";
+        }
     }
 
 }

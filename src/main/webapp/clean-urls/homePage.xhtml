@@ -1,4 +1,4 @@
-<f:view contracts="default"
+<f:view 
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:h="http://java.sun.com/jsf/html"
@@ -12,38 +12,7 @@
             <ui:include src="header.xhtml"/>
         </ui:define>
         <ui:define name="content">
-            <h:form id="mainForm">
-                <div id="page-wrapper">
-                    <div class="container-fluid">
-
-                        <!-- Page Heading -->
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <h1 class="page-header">
-                                    Inicio
-                                    <small>Bienvenidos!</small>
-                                </h1>
-                                <ol class="breadcrumb">
-                                    <li>
-                                        <i class="fa fa-dashboard"></i>  <a href="homePage.xhtml">Inicio</a>
-                                    </li>
-                                    <li class="active">
-                                        <i class="fa fa-file"></i> Este es el inicio
-                                    </li>
-                                </ol>
-                            </div>
-                        </div>
-                        <!-- /.row -->
-                        
-                        <h:dataTable value="#{empleadoBean.listaEmpleados}" var="empleado">
-                            <h:column>
-                                #{empleado.nombre}
-                            </h:column>
-                        </h:dataTable>
-                        <p>#{testclass.exampleMethod()}</p>
-                    </div>
-                </div>
-            </h:form>
+            <ui:include src="includes/contentHomePage.xhtml"/>
         </ui:define>
     </ui:composition>
 

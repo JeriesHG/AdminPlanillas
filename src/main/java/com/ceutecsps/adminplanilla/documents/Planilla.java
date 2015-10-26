@@ -6,30 +6,22 @@
 package com.ceutecsps.adminplanilla.documents;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  *
  * @author Jeries
  */
-public class Planilla {
+public class Planilla extends AbstractDoc{
 
-    private int id_planilla;
     private Date fecha_inicio;
     private Date fecha_fin;
     private boolean creada;
-    private Actividad actividad;
-    private Date inactive_date;
+    private List<Actividad> listaActividades;
+    private List<Deduccion> listaDeducciones;
 
     public Planilla() {
 
-    }
-
-    public int getId_planilla() {
-        return id_planilla;
-    }
-
-    public void setId_planilla(int id_planilla) {
-        this.id_planilla = id_planilla;
     }
 
     public Date getFecha_inicio() {
@@ -37,7 +29,7 @@ public class Planilla {
     }
 
     public void setFecha_inicio(Date fecha_inicio) {
-        this.fecha_inicio = fecha_inicio;
+        this.fecha_inicio = new java.sql.Date(fecha_inicio.getTime());
     }
 
     public Date getFecha_fin() {
@@ -45,7 +37,7 @@ public class Planilla {
     }
 
     public void setFecha_fin(Date fecha_fin) {
-        this.fecha_fin = fecha_fin;
+        this.fecha_fin = new java.sql.Date(fecha_fin.getTime());
     }
 
     public boolean isCreada() {
@@ -56,20 +48,31 @@ public class Planilla {
         this.creada = creada;
     }
 
-    public Actividad getActividad() {
-        return actividad;
+    public List<Actividad> getListaActividades() {
+        return listaActividades;
     }
 
-    public void setActividad(Actividad actividad) {
-        this.actividad = actividad;
+    public void setListaActividades(List<Actividad> listaActividades) {
+        this.listaActividades = listaActividades;
     }
 
-    public Date getInactive_date() {
-        return inactive_date;
+    public List<Deduccion> getListaDeducciones() {
+        return listaDeducciones;
     }
 
-    public void setInactive_date(Date inactive_date) {
-        this.inactive_date = inactive_date;
+    public void setListaDeducciones(List<Deduccion> listaDeducciones) {
+        this.listaDeducciones = listaDeducciones;
+    }
+    
+    public float getTotal(){
+        float total = 0;
+        for(Actividad act : listaActividades){
+            total += Float.parseFloat(act.getTotal());
+        }
+		for(Deduccion deduccion : listaDeducciones){
+			total -= total/deduccion.getPorcentajeDeducir();
+		}
+        return total;
     }
 
 }
